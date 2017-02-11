@@ -5,22 +5,22 @@ from courseNode import courseNode
 import math
 import random
 
-def getDepartmentColor():
-    idPrefix=courseID[0:2]
-    idCourseLevel=int(course[3])
+def getDepartmentColor(courseID):
+    idPrefix=courseID.split('-')[0]
+    idCourseLevel=int(courseID.split('-')[1][0])
 
-    csBaseColor=(204,0,0)
-    eceBaseColor=(51,204,51)
+    csBaseColor=[204,0,0]
+    eceBaseColor=[51,204,51]
     divisor=max((4-idCourseLevel),1)
     
     if idPrefix=="15":
-        for i in csBaseColor:
-            i=i//divisor
-            return csBaseColor
+        for i in range(len(csBaseColor)):
+            csBaseColor[i]=csBaseColor[i]//divisor
+        return csBaseColor
     elif idPrefix=="18":
-        for i in eceBaseColor:
-            i=i // divisor
-            return eceBaseColor
+        for i in range(len(eceBaseColor)):
+            eceBaseColor[i]=eceBaseColor[i]//divisor
+        return eceBaseColor
 
 #put in init
 def getMasterDict():
