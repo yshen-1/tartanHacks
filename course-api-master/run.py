@@ -66,7 +66,6 @@ class mainApp(object):
         self.xSpeed = 0;
         self.ySpeed = 0;
         self.center_distance = dict()
-        self.closest_to_center = None
 
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
@@ -104,11 +103,22 @@ class mainApp(object):
             courseDistance = ((self.width//2-self.masterDict[nodeID].x)**2 + (self.height//2-self.masterDict[nodeID].y)**2)**0.5
             self.center_distance[nodeID] = courseDistance
         self.drawCenterCourse()
+        self.drawCenterLines()
+
+    def drawCenterLines(self):
+        course = min(self.center_distance, key=self.center_distance.get)
+        prereqsFor = self.masterDict[course].getPrereqsFor()
+        for prereq in prereqsFor:
+            pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
+            self.drawLine(pos1,pos2)
+
+    def drawLine(self,pos1,pos2):
+        pygame.draw.line(self.background,(0,0,0),pos1,pos2)
 
     def drawCenterCourse(self):
         font = self.font_list[30]
         course = min(self.center_distance, key=self.center_distance.get)
-        text = font.render(self.masterDict[course].getCourseName(),True,(0,0,0))
+        text = font.render(self.masterDict[course].getCourseName(),True,(250,250,250))
         x, y = self.width//2,30
         newX=x-text.get_width()//2
         newY=y-text.get_height()//2

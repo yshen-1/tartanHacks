@@ -36,3 +36,6 @@ class courseNode(object):
 
     def getCourseName(self):
         return self.courseName
+
+    def getPosition(self):
+        return (self.x,self.y)
