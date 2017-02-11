@@ -54,9 +54,9 @@ class mainApp(object):
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
         setNodePositions(self.masterDict,self.cx,self.cy) 
-        self.font = pygame.font.SysFont('Arial', 20)
         self.xSpeed = 0;
         self.ySpeed = 0;
+
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
         courses = lessCourses(self.courseHandler.courses)
@@ -69,13 +69,17 @@ class mainApp(object):
     def addSuperScores(self):
         for nodeIDs in self.masterDict:
             self.masterDict[nodeIDs].setSuperScore(getScore(self.masterDict,nodeIDs))
+
     def keyPressed(self):
         pass
+
     def mousePressed(self,x,y):
         self.cx=x
         self.cy=y
+
     def timerFired(self):
         setNodePositions(self.masterDict,self.cx,self.cy,True)
+
     def drawNodes(self):
         for nodeID in self.masterDict.keys():
             nodeColor=getDepartmentColor(nodeID)
@@ -83,11 +87,13 @@ class mainApp(object):
             scaling = zoom(self.masterDict[nodeID].x,self.masterDict[nodeID].y,self.width,self.height)
             newRadius = self.masterDict[nodeID].r*scaling
             pygame.draw.circle(self.background,nodeColor,(self.masterDict[nodeID].x,self.masterDict[nodeID].y),int(newRadius))
-            self.addText(self.masterDict[nodeID].x,self.masterDict[nodeID].y)
+            self.addText(nodeID, scaling)
             
-
-    def addText(self,x,y):
-        text=self.font.render('Hello!', True, (0,0,0))
+    def addText(self,nodeID, scaling):
+        x, y = self.masterDict[nodeID].x,self.masterDict[nodeID].y
+        text = nodeID
+        font = pygame.font.SysFont(None,int(20*scaling))
+        text=font.render(nodeID, True, (0,0,0))
         newX=x-text.get_width()//2
         newY=y-text.get_height()//2
         self.background.blit(text, (newX,newY))
