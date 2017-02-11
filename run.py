@@ -79,7 +79,7 @@ class mainApp(object):
         self.mousePress=False
         self.zoomSpeed = 0
         self.cx,self.cy=self.width//2,self.height//2
-        self.cursorZoom = 1
+        self.cursorZoom = 0.5
         setNodePositions(self.masterDict,self.cx,self.cy,self.cursorZoom) 
         self.enablePreqsNeededLine = False
         self.font_list = list()
