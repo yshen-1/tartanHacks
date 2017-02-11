@@ -61,7 +61,7 @@ def zoom(x,y,screenWidth,screenHeight):
     # scale = max(screenWidth,screenHeight)
     x = abs(x - screenWidth/2)
     y = abs(y - screenHeight/2)
-    curve = (0.6)**(0.01*(x+y)) 
+    curve = 2*(0.9)**(0.05*(x+y)) 
 
     return abs(curve)
 
