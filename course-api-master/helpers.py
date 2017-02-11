@@ -1,4 +1,5 @@
 import json
+import copy
 
 class ScottyLabsHandler(object):
     def __init__(self):
@@ -46,15 +47,18 @@ class ScottyLabsHandler(object):
                     result.append(course)
         return result
 
-    def lessCourses(courses):
-        for key in courses:
-            subject = int(key.split("-")[0])
-            if subject != 15 and subject != 18 and subject != 21 and subject != 36 and subject != 10:
-                del courses[key]
-            
+def lessCourses(courses):
+    answer = copy.copy(courses)    
+    for key in courses:
+        subject = int(key.split("-")[0])
+        if subject not in [15, 18, 21, 36, 10, 33]:
+            del answer[key]
+    return answer
+        
                 
                   
       
-#handler = ScottyLabsHandler()
-#print(handler.courses)
+handler = ScottyLabsHandler()
+cses = handler.courses
+print(lessCourses(cses))
 
