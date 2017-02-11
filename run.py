@@ -140,11 +140,9 @@ class mainApp(object):
             #Handle if the line goes off screen
 
             (posX, posY) = pos2
-            print(self.cx,",",self.cy)
             if(posX < self.cx-self.width//2 or posX > self.cx+self.width//2 
             or posY < self.cy-self.height//2 or posY > self.cy+self.height//2):
-                print("Line off screen")
-            self.drawLine(pos1,pos2)
+                self.drawLine(pos1,pos2)
             #enlarge prereqs
             color=getDepartmentColor(prereq)
             pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
@@ -157,14 +155,10 @@ class mainApp(object):
     
     def drawPrereqsNeededLines(self, course, depth):
         prereqsNeeded = self.masterDict[course].getPrereqsNeeded()
-        print(type(prereqsNeeded))
-        print(prereqsNeeded)
-
+        
         for prereq in prereqsNeeded:
             if(prereq[0] not in self.masterDict.keys()):
                 return
-            print(self.masterDict[course].getPosition())
-            print(self.masterDict[prereq[0]].getPosition())
             pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq[0]].getPosition()
             self.drawBlackLine(pos1,pos2)
             #enlarge prereqs
@@ -261,7 +255,6 @@ class mainApp(object):
 
         if len(description) > 1000:
             description = description[:1000] + "......"
-        print(len(description))
         newSurface = render_textrect(description, description_font, descripRect, (255,255,255),(0,0,0))
         #pygame.draw.rect(self.background,(0,0,0),(x,y,maxWidth + 30 ,self.height//2),0)
         self.background.blit(newSurface,(x,y))
@@ -321,8 +314,6 @@ class mainApp(object):
                         self.enablePreqsNeededLine = False
                     elif event.key == pygame.K_z:
                         self.cursorZoom +=.01
-                        print(self.cursorZoom)
-                        print("hello")
                     elif event.key == pygame.K_x:
                         self.cursorZoom -= .01
                 elif event.type==pygame.MOUSEBUTTONUP:
