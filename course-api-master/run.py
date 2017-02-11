@@ -4,6 +4,8 @@ from helpers import ScottyLabsHandler, lessCourses, zoom
 from courseNode import courseNode
 import math
 import random
+from textrect import render_textrect
+
 
 def getDepartmentColor(courseID):
     #courseID is string containing course number
@@ -49,6 +51,11 @@ def getScore(master_dict,courseName):
         answer += getScore(master_dict,prereq)
     return answer
 
+class rect(object):
+    def __init__(self,width,height,size):
+        self.width = width
+        self.height = height
+        self.size = size
 
 
 class mainApp(object):
@@ -166,7 +173,45 @@ class mainApp(object):
         self.background.blit(text, (newX,newY))
 
     def drawDescription(self):
-        pygame.draw.rect(self.background,(0,0,0),(50,50,self.width//5,self.height//2),0)
+        
+        maxWidth = 0
+        x,y = 60,60
+        description = self.masterDict[self.centerCourse].getMasterDescrip()
+        
+        title = str(self.centerCourse) + " " + description['name']
+        font = self.font_list[20]
+        titleText=font.render(title, True, (255,255,255))
+        title_x,title_y = (x,y)
+        if titleText.get_width() > maxWidth:
+            maxWidth = titleText.get_width()
+
+        y += titleText.get_height()
+        department = "Department of " + description["department"]
+        department_font = self.font_list[20]
+        departmentText = department_font.render(department,True,(255,255,255))
+        department_x,department_y = (x,y)
+        if departmentText.get_width() > maxWidth:
+            maxWidth = departmentText.get_width()
+
+        y += departmentText.get_height() + 10
+        description = description["desc"]
+        description_font = self.font_list[20]
+        descriptionText = description_font.render(description,True,(255,255,255))
+        factor = descriptionText.get_width()//(maxWidth-10) * len(description)
+
+        description_x,description_y = (x,y)
+        descripRect = rect(maxWidth+20,self.height//2-y,(maxWidth+20,self.height//2-y))
+        newSurface = render_textrect(description, description_font, descripRect, (255,255,255),(0,0,0))
+
+        pygame.draw.rect(self.background,(0,0,0),(x-10,x-10,maxWidth + 20 ,self.height//2),0)
+        self.background.blit(newSurface,(x,y))
+        self.background.blit(titleText, (title_x,title_y))
+        self.background.blit(departmentText, (department_x,department_y))
+        #self.background.blit(descriptionText, (description_x,description_y))
+
+
+
+        #print(description.keys())
 
     def drawAll(self):
         self.background.fill(self.backgroundColor)
