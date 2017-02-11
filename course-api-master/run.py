@@ -79,6 +79,8 @@ class mainApp(object):
         self.xSpeed = 0;
         self.ySpeed = 0;
         self.center_distance = dict()
+        self.descriptionMode = False
+        self.centerCourse = None
 
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
@@ -87,6 +89,7 @@ class mainApp(object):
             currentNode = courseNode(courses[course]["name"])
             currentNode.addPrereqsFor(self.courseHandler.getPreFor(courses,course))
             currentNode.addPrereqsNeeded(self.courseHandler.getPreNeeded(courses,course))
+            currentNode.setMasterDescrip(self.courseHandler.getDescriptions(courses,course))
             self.masterDict[course] = currentNode
 
     def addSuperScores(self):
@@ -115,11 +118,12 @@ class mainApp(object):
             #draw course name
             courseDistance = ((self.width//2-self.masterDict[nodeID].x)**2 + (self.height//2-self.masterDict[nodeID].y)**2)**0.5
             self.center_distance[nodeID] = courseDistance
+        self.centerCourse = min(self.center_distance, key=self.center_distance.get)
         self.drawCenterCourse()
         self.drawCenterLines()
 
     def drawCenterLines(self):
-        course = min(self.center_distance, key=self.center_distance.get)
+        course = self.centerCourse
         prereqsFor = self.masterDict[course].getPrereqsFor()
         for prereq in prereqsFor:
             pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
@@ -134,7 +138,7 @@ class mainApp(object):
 
     def drawCenterCourse(self):
         font = self.font_list[30]
-        course = min(self.center_distance, key=self.center_distance.get)
+        course = self.centerCourse
         text = font.render(self.masterDict[course].getCourseName(),True,(250,250,250))
         super_text = font.render("Prereq for: " + str(self.masterDict[course].getSuperScore()) + " courses",True,(250,250,250))
         x, y = self.width//2,30
@@ -154,11 +158,16 @@ class mainApp(object):
         newY=y-text.get_height()//2
         self.background.blit(text, (newX,newY))
 
+    def drawDescription(self):
+        return
+
     def drawAll(self):
         self.background.fill(self.backgroundColor)
         self.backgroundImage=self.backgroundImage.convert()
         self.background.blit(self.backgroundImage,(int(self.backgroundX),int(self.backgroundY)))
         self.drawNodes()
+        if self.descriptionMode:
+            self.drawDescription()
         self.background=self.background.convert()
         self.screen.blit(self.background,(0,0))
 
@@ -180,6 +189,8 @@ class mainApp(object):
                         self.ySpeed = -12
                     elif event.key == pygame.K_DOWN:
                         self.ySpeed = 12
+                    elif event.key == pygame.K_d:
+                        self.descriptionMode = True
                 elif event.type==pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.xSpeed = 0
@@ -189,6 +200,8 @@ class mainApp(object):
                         self.ySpeed = 0
                     elif event.key == pygame.K_DOWN:
                         self.ySpeed = 0
+                    elif event.key == pygame.K_d:
+                        self.descriptionMode = False
                 elif event.type==pygame.MOUSEBUTTONUP:
                     self.mousePress=False
                 elif event.type==pygame.MOUSEBUTTONDOWN:
@@ -238,11 +251,15 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
+            if courseNode.superScore <= largest - 40:
+                factor += 2*(largest - courseNode.superScore)
+            else:
+                factor += 80 
             if courseNode.superScore < breakPoint:
-                factor = (breakPoint - courseNode.superScore)*100
+                factor += (breakPoint - courseNode.superScore)*100
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor)/2#radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=((largest-courseNode.superScore) + factor)/4#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)

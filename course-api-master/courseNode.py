@@ -8,6 +8,7 @@ class courseNode(object):
         self.prereqsNeeded = list()
         self.superScore=0
         self.angle=0
+        self.master_descrip = dict()
 
     def setSuperScore(self,superScore):
         self.superScore=superScore
@@ -18,6 +19,12 @@ class courseNode(object):
     def setPosition(self,x,y):
         self.x = x
         self.y = y 
+
+    def setMasterDescrip(self,descrip):
+        self.master_descrip = descrip
+
+    def getMasterDescrip(self):
+        return self.master_descrip
 
     def addPrereqsFor(self,L):
         self.prereqsFor.extend(L)

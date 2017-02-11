@@ -48,6 +48,10 @@ class ScottyLabsHandler(object):
                     result.append(course)
         return result
 
+    def getDescriptions(self,courses,courseName):
+        return courses[courseName]
+
+
 def lessCourses(courses):
     answer = copy.copy(courses)    
     for key in courses:
