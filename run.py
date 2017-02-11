@@ -130,13 +130,20 @@ class mainApp(object):
         self.centerCourse = min(self.center_distance, key=self.center_distance.get)
         self.drawCenterCourse()
         self.drawCenterLines(self.centerCourse,1)
-        #if(self.enablePreqsNeededLine):
-         #   self.drawPrereqsNeededLines(self.centerCourse,1)
+        if(self.enablePreqsNeededLine):
+            self.drawPrereqsNeededLines(self.centerCourse,1)
 
     def drawCenterLines(self, course, depth):
         prereqsFor = self.masterDict[course].getPrereqsFor()
         for prereq in prereqsFor:
             pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
+            #Handle if the line goes off screen
+
+            (posX, posY) = pos2
+            print(self.cx,",",self.cy)
+            if(posX < self.cx-self.width//2 or posX > self.cx+self.width//2 
+            or posY < self.cy-self.height//2 or posY > self.cy+self.height//2):
+                print("Line off screen")
             self.drawLine(pos1,pos2)
             #enlarge prereqs
             color=getDepartmentColor(prereq)
@@ -150,20 +157,33 @@ class mainApp(object):
     
     def drawPrereqsNeededLines(self, course, depth):
         prereqsNeeded = self.masterDict[course].getPrereqsNeeded()
+        print(type(prereqsNeeded))
+        print(prereqsNeeded)
+
         for prereq in prereqsNeeded:
-            pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
-            self.drawLine(pos1,pos2)
+            if(prereq[0] not in self.masterDict.keys()):
+                return
+            print(self.masterDict[course].getPosition())
+            print(self.masterDict[prereq[0]].getPosition())
+            pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq[0]].getPosition()
+            self.drawBlackLine(pos1,pos2)
             #enlarge prereqs
-            color=getDepartmentColor(prereq)
-            pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
-            self.addText(prereq, 1)
+            color=getDepartmentColor(prereq[0])
+            pygame.draw.circle(self.background,color,(self.masterDict[prereq[0]].x,
+                self.masterDict[prereq[0]].y),25)
+            self.addText(prereq[0], 1)
+        
+            
+            
             depth -= 1
             if(depth > 0):
                 pass
                 #Enable for recursive line drawing
-                #self.drawCenterLines(prereq,depth)
+                self.drawCenterLines(prereq[0],depth)
     def drawLine(self,pos1,pos2):
         pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
+    def drawBlackLine(self,pos1,pos2):
+        pygame.draw.aaline(self.background,(0,0,0),pos1,pos2,1)
 
     def drawCenterCourse(self):
         font = self.font_list[30]
@@ -215,19 +235,38 @@ class mainApp(object):
         if departmentText.get_width() > maxWidth:
             maxWidth = departmentText.get_width()
 
-        y += departmentText.get_height() + 10
+        y += departmentText.get_height()
+        prereqsStr = description["prereqs"]
+        if prereqsStr == None:
+            prereqsStr = "None"
+        prereqs = "Pre-reqs: " + prereqsStr
+        prereqs_font = self.font_list[20]
+        prereqsText = prereqs_font.render(prereqs,True,(255,255,255))
+        prereqs_x,prereqs_y = (x,y)
+        if prereqsText.get_width() > maxWidth:
+            maxWidth = prereqsText.get_width()
+
+
+
+        y += prereqsText.get_height() + 10
         description = description["desc"]
+        if description == None:
+            description = ""
         description_font = self.font_list[20]
         descriptionText = description_font.render(description,True,(255,255,255))
-        factor = descriptionText.get_width()//(maxWidth-10) * len(description)
 
         description_x,description_y = (x,y)
-        descripRect = rect(maxWidth+20,self.height//2-y,(maxWidth+20,self.height//2-y))
-        newSurface = render_textrect(description, description_font, descripRect, (255,255,255),(0,0,0))
+        maxWidth = self.width//6
+        descripRect = rect(maxWidth+20,self.height//2-y,(maxWidth+20,self.height))
 
-        pygame.draw.rect(self.background,(0,0,0),(x-10,x-10,maxWidth + 20 ,self.height//2),0)
+        if len(description) > 1000:
+            description = description[:1000] + "......"
+        print(len(description))
+        newSurface = render_textrect(description, description_font, descripRect, (255,255,255),(0,0,0))
+        #pygame.draw.rect(self.background,(0,0,0),(x,y,maxWidth + 30 ,self.height//2),0)
         self.background.blit(newSurface,(x,y))
         self.background.blit(titleText, (title_x,title_y))
+        self.background.blit(prereqsText, (prereqs_x,prereqs_y))
         self.background.blit(departmentText, (department_x,department_y))
         #self.background.blit(descriptionText, (description_x,description_y))
 
