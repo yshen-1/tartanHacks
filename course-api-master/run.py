@@ -125,8 +125,6 @@ class mainApp(object):
             self.drawLine(pos1,pos2)
             #enlarge prereqs
             color=getDepartmentColor(prereq)
-            print("prereq: ", prereq)
-            print("color: ", color)
             pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
             self.addText(prereq, 1)
 
@@ -137,10 +135,14 @@ class mainApp(object):
         font = self.font_list[30]
         course = min(self.center_distance, key=self.center_distance.get)
         text = font.render(self.masterDict[course].getCourseName(),True,(250,250,250))
+        super_text = font.render("Prereq for: " + str(self.masterDict[course].getSuperScore()) + " courses",True,(250,250,250))
         x, y = self.width//2,30
         newX=x-text.get_width()//2
         newY=y-text.get_height()//2
+        secondLineX = x - super_text.get_width()//2
+        secondLineY = y - super_text.get_height()//2 + 30
         self.background.blit(text,(newX,newY))
+        self.background.blit(super_text,(secondLineX,secondLineY))
             
     def addText(self,nodeID, scaling):
         x, y = self.masterDict[nodeID].x,self.masterDict[nodeID].y
