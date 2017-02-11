@@ -12,6 +12,8 @@ class mainApp(object):
         self.background.fill((255,25,255))
         self.background=self.background.convert()
         self.isRunning=True
+    def keyPressed(self):
+        pass
     def timerFired(self):
         pass
     def drawAll(self):
@@ -25,6 +27,8 @@ class mainApp(object):
                     self.isRunning=False
                 elif event.type==pygame.KEYDOWN and event.key==pygame.K_ESCAPE:
                     self.isRunning=False
+                elif event.type==pygame.KEYDOWN:
+                    self.keyPressed()
             self.timerFired()
             self.drawAll()
             pygame.display.update()
