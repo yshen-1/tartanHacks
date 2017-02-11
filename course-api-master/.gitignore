@@ -92,5 +92,3 @@ ENV/
 # Rope project settings
 .ropeproject
 
-# Ignore test output
-*.json
