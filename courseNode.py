@@ -26,12 +26,14 @@ class courseNode(object):
 
 		csBaseColor = (204, 0, 0)
 		eceBaseColor = (51, 204, 51)
+		divisor = max((4-idCourseLevel),1)
 
 		if(idPrefix == "15"):
 			for i in csBaseColor:
-				cs
-			 
-			return ()
+				i = i // divisor
+			return csBaseColor
 		elif(idPrefix == "18")
-			return ()
+			for i in eceBaseColor:
+				i = i // divisor
+			return eceBaseColor
 	
