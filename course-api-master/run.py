@@ -60,10 +60,13 @@ class mainApp(object):
         self.cx,self.cy=self.width//2,self.height//2
         setNodePositions(self.masterDict,self.cx,self.cy) 
         self.font_list = list()
+        #creating font library
         for i in range(1,51):
             self.font_list.append(pygame.font.SysFont(None,i))
         self.xSpeed = 0;
         self.ySpeed = 0;
+        self.center_distance = dict()
+        self.closest_to_center = None
 
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
@@ -78,7 +81,6 @@ class mainApp(object):
         for nodeIDs in self.masterDict:
             self.masterDict[nodeIDs].setSuperScore(getScore(self.masterDict,nodeIDs))
 
-    
 
     def keyPressed(self):
         pass
@@ -98,6 +100,19 @@ class mainApp(object):
             newRadius = self.masterDict[nodeID].r*scaling
             pygame.draw.circle(self.background,nodeColor,(self.masterDict[nodeID].x,self.masterDict[nodeID].y),int(newRadius))
             self.addText(nodeID, scaling)
+            #draw course name
+            courseDistance = ((self.width//2-self.masterDict[nodeID].x)**2 + (self.height//2-self.masterDict[nodeID].y)**2)**0.5
+            self.center_distance[nodeID] = courseDistance
+            self.drawCenterCourse()
+
+    def drawCenterCourse(self):
+        font = self.font_list[30]
+        course = min(self.center_distance, key=self.center_distance.get)
+        text = font.render(self.masterDict[course].getCourseName(),True,(0,0,0))
+        x, y = self.width//2,30
+        newX=x-text.get_width()//2
+        newY=y-text.get_height()//2
+        self.background.blit(text,(newX,newY))
             
     def addText(self,nodeID, scaling):
         x, y = self.masterDict[nodeID].x,self.masterDict[nodeID].y
