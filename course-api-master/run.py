@@ -59,8 +59,10 @@ class mainApp(object):
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.background=pygame.Surface((self.width,self.height))
         self.backgroundImage=pygame.image.load("blurdark.png")
+        self.backgroundColor=(150,50,140)
         self.backgroundImage=self.backgroundImage.convert()
         self.backgroundX,self.backgroundY=0,0
+        self.background.fill(self.backgroundColor)
         self.background.blit(self.backgroundImage,(self.backgroundX,self.backgroundY))
         self.isRunning=True
         self.masterDict=dict()
@@ -150,6 +152,7 @@ class mainApp(object):
         self.background.blit(text, (newX,newY))
 
     def drawAll(self):
+        self.background.fill(self.backgroundColor)
         self.background.blit(self.backgroundImage,(int(self.backgroundX),int(self.backgroundY)))
         self.drawNodes()
         self.background=self.background.convert()
@@ -231,15 +234,11 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
-            if courseNode.superScore <= largest - 40:
-                factor += 4*(largest - courseNode.superScore)
-            else:
-                factor += 160 
             if courseNode.superScore < breakPoint:
-                factor += (breakPoint - courseNode.superScore)*100 + 300
+                factor = (breakPoint - courseNode.superScore)*100
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor)/6#radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=((largest-courseNode.superScore) + factor)/2#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
