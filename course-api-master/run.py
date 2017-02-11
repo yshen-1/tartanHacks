@@ -15,7 +15,7 @@ def getDepartmentColor(courseID):
     csBaseColor=[255,65,54]
     eceBaseColor=[1,244,112]
     mlBaseColor=[0,116,217]
-    otherBaseColor=[176,196,222]
+    otherBaseColor=[130,160,190]
     
     mult = 20
     
@@ -79,6 +79,7 @@ class mainApp(object):
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
         setNodePositions(self.masterDict,self.cx,self.cy) 
+        self.enablePreqsNeededLine = False
         self.font_list = list()
         #creating font library
         for i in range(1,51):
@@ -127,10 +128,11 @@ class mainApp(object):
             self.center_distance[nodeID] = courseDistance
         self.centerCourse = min(self.center_distance, key=self.center_distance.get)
         self.drawCenterCourse()
-        self.drawCenterLines()
+        self.drawCenterLines(self.centerCourse,1)
+        #if(self.enablePreqsNeededLine):
+         #   self.drawPrereqsNeededLines(self.centerCourse,1)
 
-    def drawCenterLines(self):
-        course = self.centerCourse
+    def drawCenterLines(self, course, depth):
         prereqsFor = self.masterDict[course].getPrereqsFor()
         for prereq in prereqsFor:
             pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
@@ -139,7 +141,26 @@ class mainApp(object):
             color=getDepartmentColor(prereq)
             pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
             self.addText(prereq, 1)
-
+            depth -= 1
+            if(depth > 0):
+                pass
+                #Enable for recursive line drawing
+                #self.drawCenterLines(prereq,depth)
+    
+    def drawPrereqsNeededLines(self, course, depth):
+        prereqsNeeded = self.masterDict[course].getPrereqsNeeded()
+        for prereq in prereqsNeeded:
+            pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
+            self.drawLine(pos1,pos2)
+            #enlarge prereqs
+            color=getDepartmentColor(prereq)
+            pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
+            self.addText(prereq, 1)
+            depth -= 1
+            if(depth > 0):
+                pass
+                #Enable for recursive line drawing
+                #self.drawCenterLines(prereq,depth)
     def drawLine(self,pos1,pos2):
         pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
 
@@ -234,15 +255,17 @@ class mainApp(object):
                     self.isRunning=False
                 elif event.type==pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        self.xSpeed = 12
+                        self.xSpeed = 18
                     elif event.key == pygame.K_RIGHT:
-                        self.xSpeed = -12
+                        self.xSpeed = -18
                     elif event.key == pygame.K_UP:
-                        self.ySpeed = -12
+                        self.ySpeed = -18
                     elif event.key == pygame.K_DOWN:
-                        self.ySpeed = 12
+                        self.ySpeed = 18
                     elif event.key == pygame.K_d:
                         self.descriptionMode = True
+                    elif event.key == pygame.K_n:
+                        self.enablePreqsNeededLine = True
                 elif event.type==pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.xSpeed = 0
@@ -254,6 +277,8 @@ class mainApp(object):
                         self.ySpeed = 0
                     elif event.key == pygame.K_d:
                         self.descriptionMode = False
+                    elif event.key == pygame.K_n:
+                        self.enablePreqsNeededLine = False
                 elif event.type==pygame.MOUSEBUTTONUP:
                     self.mousePress=False
                 elif event.type==pygame.MOUSEBUTTONDOWN:
@@ -303,6 +328,7 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
+            endid = int(courseId[4:6])*4
             if courseNode.superScore <= largest - 40:
                 factor += 2*(largest - courseNode.superScore)
             else:
@@ -311,7 +337,7 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
                 factor += (breakPoint - courseNode.superScore)*100
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor)/4#radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=((largest-courseNode.superScore) + factor+endid)/4 #radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
