@@ -78,7 +78,8 @@ class mainApp(object):
         self.addSuperScores()
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
-        setNodePositions(self.masterDict,self.cx,self.cy) 
+        self.cursorZoom = 1
+        setNodePositions(self.masterDict,self.cx,self.cy,self.cursorZoom) 
         self.enablePreqsNeededLine = False
         self.font_list = list()
         #creating font library
@@ -113,7 +114,7 @@ class mainApp(object):
         self.cy=y
 
     def timerFired(self):
-        setNodePositions(self.masterDict,self.cx,self.cy,True)
+        setNodePositions(self.masterDict,self.cx,self.cy,self.cursorZoom,True)
 
     def drawNodes(self):
         for nodeID in self.masterDict.keys():
@@ -279,6 +280,12 @@ class mainApp(object):
                         self.descriptionMode = False
                     elif event.key == pygame.K_n:
                         self.enablePreqsNeededLine = False
+                    elif event.key == pygame.K_z:
+                        self.cursorZoom +=.01
+                        print(self.cursorZoom)
+                        print("hello")
+                    elif event.key == pygame.K_x:
+                        self.cursorZoom -= .01
                 elif event.type==pygame.MOUSEBUTTONUP:
                     self.mousePress=False
                 elif event.type==pygame.MOUSEBUTTONDOWN:
@@ -311,7 +318,7 @@ def getAllNLevelCourse(courseDict,n,hasPrereqs):
             L.extend(courseID)
     return L
 
-def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
+def setNodePositions(courseDict, cx, cy,cursorZoom,randomizeAngles=False):
     largest = largestSuperScore(courseDict)
     if not randomizeAngles:
         radiusScalingFactor = 1000;
@@ -324,7 +331,7 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
             courseNode.setPosition(int(posX),int(posY))
             courseNode.setAngle(angle)
     else:
-        radiusScalingFactor=2000
+        radiusScalingFactor=2000*cursorZoom
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
@@ -337,7 +344,7 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
                 factor += (breakPoint - courseNode.superScore)*100
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor+endid)/4 #radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=cursorZoom*((largest-courseNode.superScore) + factor+endid)*2 #radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
