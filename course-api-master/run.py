@@ -262,6 +262,7 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
+            endid = int(courseId[4:6])*4
             if courseNode.superScore <= largest - 40:
                 factor += 2*(largest - courseNode.superScore)
             else:
@@ -270,7 +271,7 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
                 factor += (breakPoint - courseNode.superScore)*100
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor)/4#radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=((largest-courseNode.superScore) + factor+endid)/4 #radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
