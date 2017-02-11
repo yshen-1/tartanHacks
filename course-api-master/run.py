@@ -1,6 +1,6 @@
 #!/usr/bin/env/python3
 import pygame
-from helpers import ScottyLabsHandler, lessCourses
+from helpers import ScottyLabsHandler, lessCourses, zoom
 from courseNode import courseNode
 import math
 import random
@@ -54,6 +54,7 @@ class mainApp(object):
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
         setNodePositions(self.masterDict,self.cx,self.cy) 
+        self.font = pygame.font.SysFont('Arial', 20)
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
         courses = lessCourses(self.courseHandler.courses)
@@ -78,12 +79,24 @@ class mainApp(object):
         for nodeID in self.masterDict.keys():
             nodeColor=getDepartmentColor(nodeID)
             nodeColor=nodeColor if nodeColor!=None else [150,30,150]
-            pygame.draw.circle(self.background,nodeColor,(self.masterDict[nodeID].x,self.masterDict[nodeID].y),self.masterDict[nodeID].r)
+            scaling = zoom(self.masterDict[nodeID].x,self.masterDict[nodeID].y,self.width,self.height)
+            newRadius = self.masterDict[nodeID].r*scaling
+            pygame.draw.circle(self.background,nodeColor,(self.masterDict[nodeID].x,self.masterDict[nodeID].y),int(newRadius))
+            self.addText(self.masterDict[nodeID].x,self.masterDict[nodeID].y)
+            
+
+    def addText(self,x,y):
+        text=self.font.render('Hello!', True, (0,0,0))
+        newX=x-text.get_width()//2
+        newY=y-text.get_height()//2
+        self.background.blit(text, (newX,newY))
+
     def drawAll(self):
         self.background.fill(self.backgroundColor)
         self.drawNodes()
         self.background=self.background.convert()
         self.screen.blit(self.background,(0,0))
+
     def run(self):
         while self.isRunning:
             (mouseX,mouseY)=pygame.mouse.get_pos()
