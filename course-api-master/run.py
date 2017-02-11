@@ -1,6 +1,7 @@
 #!/usr/bin/env/python3
 import pygame
-import helpers, courseNode
+from helpers import ScottyLabsHandler
+from courseNode import courseNode
 import math
 
 def getDepartmentColor():
@@ -22,8 +23,13 @@ def getDepartmentColor():
 
 def getMasterDict(courses):
     result_dict = dict()
+    course_handler = ScottyLabsHandler()
     for course in courses:
-        currentNode = courseNode()
+        currentNode = courseNode(course["name"])
+        currentNode.addPrereqsFor(course_handler.getPreFor(courses,course))
+        currentNode.addPrereqsNeeded(course_handler.getPreNeeded(courses,course))
+        result_dict[course] = courseNode
+    return result_dict
 
 
 class mainApp(object):
@@ -65,7 +71,7 @@ class mainApp(object):
 def getAllNLevelNoPrereqs(courseDict,n):
     L = []
     for courseId, courseNode in courseDict.items():
-        if(courseId[3] == 1 && len(courseNode.prereqsNeeded) == 0):
+        if(courseId[3] == 1 and len(courseNode.prereqsNeeded) == 0):
             L.extend(courseNode)
     return L
 def setNodePositions(courseDict, width, height):
