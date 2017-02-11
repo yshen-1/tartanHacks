@@ -181,7 +181,11 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
     else:
         radiusScalingFactor=2000
         for courseId, courseNode in courseDict.items():
-            radius=(largest-courseNode.superScore)*1.5#radiusScalingFactor/(courseNode.superScore+1)+50
+            factor = 0
+            breakPoint = 5
+            if courseNode.superScore < breakPoint:
+                factor = (breakPoint - courseNode.superScore)*100
+            radius=((largest-courseNode.superScore) + factor)#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
