@@ -125,8 +125,6 @@ class mainApp(object):
             self.drawLine(pos1,pos2)
             #enlarge prereqs
             color=getDepartmentColor(prereq)
-            print("prereq: ", prereq)
-            print("color: ", color)
             pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
             self.addText(prereq, 1)
 
@@ -234,11 +232,15 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
+            if courseNode.superScore <= largest - 40:
+                factor += 2*(largest - courseNode.superScore)
+            else:
+                factor += 80 
             if courseNode.superScore < breakPoint:
-                factor = (breakPoint - courseNode.superScore)*100
+                factor += (breakPoint - courseNode.superScore)*100
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor)/2#radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=((largest-courseNode.superScore) + factor)/4#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
