@@ -13,7 +13,7 @@ def getDepartmentColor(courseID):
     csBaseColor=[255,65,54]
     eceBaseColor=[1,244,112]
     mlBaseColor=[0,116,217]
-    otherBaseColor=[100,236,240]
+    otherBaseColor=[130,160,190]
     
     mult = 20
     
@@ -193,13 +193,13 @@ class mainApp(object):
                     self.isRunning=False
                 elif event.type==pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        self.xSpeed = 12
+                        self.xSpeed = 18
                     elif event.key == pygame.K_RIGHT:
-                        self.xSpeed = -12
+                        self.xSpeed = -18
                     elif event.key == pygame.K_UP:
-                        self.ySpeed = -12
+                        self.ySpeed = -18
                     elif event.key == pygame.K_DOWN:
-                        self.ySpeed = 12
+                        self.ySpeed = 18
                     elif event.key == pygame.K_d:
                         self.descriptionMode = True
                 elif event.type==pygame.KEYUP:
