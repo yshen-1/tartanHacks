@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
+
 # @file setup.py
 # @brief Setup file that packages the project for pip.
 # @author Justin Gallagher (jrgallag@andrew.cmu.edu)
 # @since 2015-11-08
 
+#!/usr/bin/env/python3
 from setuptools import setup
-
 setup(name='cmu-course-api',
       version='1.5.1',
       description=('Python utility for retrieving information about courses at'
@@ -19,3 +19,4 @@ setup(name='cmu-course-api',
         'beautifulsoup4==4.4.1'
       ],
       scripts=['bin/cmu-course-api', 'bin/cmu-fce-api'])
+
