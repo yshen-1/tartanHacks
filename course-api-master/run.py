@@ -54,6 +54,8 @@ class mainApp(object):
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
         setNodePositions(self.masterDict,self.cx,self.cy) 
+        self.xSpeed = 0;
+        self.ySpeed = 0;
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
         courses = lessCourses(self.courseHandler.courses)
@@ -87,17 +89,36 @@ class mainApp(object):
     def run(self):
         while self.isRunning:
             (mouseX,mouseY)=pygame.mouse.get_pos()
+            
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
                     self.isRunning=False
                 elif event.type==pygame.KEYDOWN and event.key==pygame.K_ESCAPE:
                     self.isRunning=False
                 elif event.type==pygame.KEYDOWN:
-                    self.keyPressed()
+                    if event.key == pygame.K_LEFT:
+                        self.xSpeed = 8
+                    elif event.key == pygame.K_RIGHT:
+                        self.xSpeed = -8
+                    elif event.key == pygame.K_UP:
+                        self.ySpeed = -8
+                    elif event.key == pygame.K_DOWN:
+                        self.ySpeed = 8
+                elif event.type==pygame.KEYUP:
+                    if event.key == pygame.K_LEFT:
+                        self.xSpeed = 0
+                    elif event.key == pygame.K_RIGHT:
+                        self.xSpeed = 0
+                    elif event.key == pygame.K_UP:
+                        self.ySpeed = 0
+                    elif event.key == pygame.K_DOWN:
+                        self.ySpeed = 0
                 elif event.type==pygame.MOUSEBUTTONUP:
                     self.mousePress=False
                 elif event.type==pygame.MOUSEBUTTONDOWN:
                     self.mousePress=True
+            self.cx += self.xSpeed
+            self.cy -= self.ySpeed
             if self.mousePress:
                 self.mousePressed(mouseX,mouseY)
             self.timerFired()
@@ -117,16 +138,17 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
     if not randomizeAngles:
         radiusScalingFactor = 1000;
         for courseId, courseNode in courseDict.items():
-            angle = random.uniform(0, 2*math.pi)
+            angle = 10*int(courseId[0:2])+ int(courseId[3:6])*2;
+            #angle = random.uniform(0, 2*math.pi)
             radius = radiusScalingFactor/(courseNode.superScore+1)
             posX = radius*math.cos(angle)+cx
             posY = cy-radius*math.sin(angle)
             courseNode.setPosition(int(posX),int(posY))
             courseNode.setAngle(angle)
     else:
-        radiusScalingFactor=1000
+        radiusScalingFactor=2000
         for courseId, courseNode in courseDict.items():
-            radius=radiusScalingFactor/(courseNode.superScore+1)
+            radius=radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
