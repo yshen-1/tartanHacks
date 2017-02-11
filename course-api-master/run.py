@@ -14,6 +14,8 @@ class mainApp(object):
         self.isRunning=True
     def keyPressed(self):
         pass
+    def mousePressed(self):
+        pass
     def timerFired(self):
         pass
     def drawAll(self):
@@ -29,6 +31,8 @@ class mainApp(object):
                     self.isRunning=False
                 elif event.type==pygame.KEYDOWN:
                     self.keyPressed()
+                elif event.type==pygame.MOUSEBUTTONUP:
+                    seslf.mousePressed()
             self.timerFired()
             self.drawAll()
             pygame.display.update()
