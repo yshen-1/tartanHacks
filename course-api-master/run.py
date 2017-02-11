@@ -122,7 +122,7 @@ def getAllNLevelCourse(courseDict,n,hasPrereqs):
 def setNodePositions(courseDict, cx, cy):
     radiusScalingFactor = 1000;
     for courseId, courseNode in courseDict.items():
-        angle = random.uniform(0, 2*pi)
+        angle = random.uniform(0, 2*math.pi)
         radius = radiusScalingFactor/courseNode.superScore
         posX = radius*cos(angle)+cx
         posY = cy-radius*sin(angle)
