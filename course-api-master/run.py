@@ -10,27 +10,28 @@ def getDepartmentColor(courseID):
     idPrefix=courseID.split('-')[0]
     idCourseLevel=int(courseID.split('-')[1][0])
 
-    csBaseColor=[255,51,0]
-    eceBaseColor=[51,204,51]
-    mlBaseColor=[51,51,204]
-    otherBaseColor=[150,30,150]
-    divisor=min(max((0.4*idCourseLevel),1),2.0)
+    csBaseColor=[255,65,54]
+    eceBaseColor=[1,244,112]
+    mlBaseColor=[0,116,217]
+    otherBaseColor=[176,196,222]
+    
+    mult = 20
     
     if idPrefix=="15":
         for i in range(len(csBaseColor)):
-            csBaseColor[i]=csBaseColor[i]//divisor
+            csBaseColor[i]=max(0,csBaseColor[i]-idCourseLevel*mult)
         return csBaseColor
     elif idPrefix=="18":
         for i in range(len(eceBaseColor)):
-            eceBaseColor[i]=eceBaseColor[i]//divisor
+            eceBaseColor[i]=max(0,eceBaseColor[i]-idCourseLevel*mult)
         return eceBaseColor
     elif idPrefix=="10":
         for i in range(len(mlBaseColor)):
-            mlBaseColor[i]=mlBaseColor[i]//divisor
+            mlBaseColor[i]==max(0,mlBaseColor[i]-idCourseLevel*mult)
         return mlBaseColor
     else:
         for i in range(len(mlBaseColor)):
-            otherBaseColor[i]=otherBaseColor[i]//divisor
+            otherBaseColor[i]==max(0,otherBaseColor[i])
         return otherBaseColor
 
 
@@ -250,11 +251,15 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
+            if courseNode.superScore <= largest - 40:
+                factor += 2*(largest - courseNode.superScore)
+            else:
+                factor += 80 
             if courseNode.superScore < breakPoint:
-                factor = (breakPoint - courseNode.superScore)*100
+                factor += (breakPoint - courseNode.superScore)*100
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor)/2#radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=((largest-courseNode.superScore) + factor)/4#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
