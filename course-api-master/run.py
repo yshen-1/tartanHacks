@@ -54,6 +54,9 @@ class mainApp(object):
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
         setNodePositions(self.masterDict,self.cx,self.cy) 
+        self.font_list = list()
+        for i in range(1,51):
+            self.font_list.append(pygame.font.SysFont(None,i))
         self.xSpeed = 0;
         self.ySpeed = 0;
 
@@ -92,7 +95,7 @@ class mainApp(object):
     def addText(self,nodeID, scaling):
         x, y = self.masterDict[nodeID].x,self.masterDict[nodeID].y
         text = nodeID
-        font = pygame.font.SysFont(None,int(20*scaling))
+        font = self.font_list[int(20*scaling)]
         text=font.render(nodeID, True, (0,0,0))
         newX=x-text.get_width()//2
         newY=y-text.get_height()//2
