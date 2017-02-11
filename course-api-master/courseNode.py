@@ -7,9 +7,11 @@ class courseNode(object):
         self.prereqsFor = list()
         self.prereqsNeeded = list()
         self.superScore=0
+        self.angle=0
     def setSuperScore(self,superScore):
         self.superScore=superScore
-
+    def setAngle(self,angle):
+        self.angle=angle
     def setPosition(self,x,y):
         self.x = x
         self.y = y 

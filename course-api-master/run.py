@@ -37,23 +37,23 @@ def getScore(master_dict,courseName):
 
 class mainApp(object):
     def __init__(self):
-#        pygame.init()
+        pygame.init()
         self.resolution=2
         self.height=(1080)//2
         self.width=(1920)//2
-#        self.screen=pygame.display.set_mode((self.width,self.height))
-#        self.background=pygame.Surface((self.width,self.height))
+        self.screen=pygame.display.set_mode((self.width,self.height))
+        self.background=pygame.Surface((self.width,self.height))
         self.backgroundColor=(255,25,255)
-#        self.background.fill(self.backgroundColor)
-#        self.background=self.background.convert()
+        self.background.fill(self.backgroundColor)
+        self.background=self.background.convert()
         self.isRunning=True
         self.masterDict=dict()
         self.updateMasterDictionary()
         print("Dict updated!")
         self.addSuperScores()
-#        self.mousePressed=False
+        self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
-
+        setNodePositions(self.masterDict,self.cx,self.cy) 
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
         courses = lessCourses(self.courseHandler.courses)
@@ -73,7 +73,7 @@ class mainApp(object):
         self.cx=x
         self.cy=y
     def timerFired(self):
-        setNodePositions(self.masterDict,self.cx,self.cy)
+        setNodePositions(self.masterDict,self.cx,self.cy,True)
     def drawNodes(self):
         for nodeID in self.masterDict.keys():
             nodeColor=getDepartmentColor(nodeID)
@@ -95,10 +95,10 @@ class mainApp(object):
                 elif event.type==pygame.KEYDOWN:
                     self.keyPressed()
                 elif event.type==pygame.MOUSEBUTTONUP:
-                    self.mousePressed=False
+                    self.mousePress=False
                 elif event.type==pygame.MOUSEBUTTONDOWN:
-                    self.mousePressed=True
-            if self.mousePressed:
+                    self.mousePress=True
+            if self.mousePress:
                 self.mousePressed(mouseX,mouseY)
             self.timerFired()
             self.drawAll()
@@ -113,16 +113,26 @@ def getAllNLevelCourse(courseDict,n,hasPrereqs):
             L.extend(courseID)
     return L
 
-def setNodePositions(courseDict, cx, cy):
-    radiusScalingFactor = 1000;
-    for courseId, courseNode in courseDict.items():
-        angle = random.uniform(0, 2*math.pi)
-        radius = radiusScalingFactor/courseNode.superScore
-        posX = radius*cos(angle)+cx
-        posY = cy-radius*sin(angle)
-        courseNode.setPosition(posX,posY)
+def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
+    if not randomizeAngles:
+        radiusScalingFactor = 1000;
+        for courseId, courseNode in courseDict.items():
+            angle = random.uniform(0, 2*math.pi)
+            radius = radiusScalingFactor/(courseNode.superScore+1)
+            posX = radius*math.cos(angle)+cx
+            posY = cy-radius*math.sin(angle)
+            courseNode.setPosition(int(posX),int(posY))
+            courseNode.setAngle(angle)
+    else:
+        radiusScalingFactor=1000
+        for courseId, courseNode in courseDict.items():
+            radius=radiusScalingFactor/(courseNode.superScore+1)
+            posX=radius*math.cos(courseNode.angle)+cx
+            posY=cy-radius*math.sin(courseNode.angle)
+            posX,posY=int(posX),int(posY)
+            courseNode.setPosition(posX,posY)
 
-# if __name__=='__main__':
-#      testApp=mainApp()
-#      testApp.run()
+if __name__=='__main__':
+    testApp=mainApp()
+    testApp.run()
 
