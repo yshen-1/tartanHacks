@@ -13,7 +13,7 @@ def getDepartmentColor(courseID):
     csBaseColor=[255,65,54]
     eceBaseColor=[1,244,112]
     mlBaseColor=[0,116,217]
-    otherBaseColor=[176,196,222]
+    otherBaseColor=[100,236,240]
     
     mult = 20
     
