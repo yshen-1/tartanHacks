@@ -42,9 +42,9 @@ def render_textrect(string, font, rect, text_color, background_color, justificat
         if font.size(requested_line)[0] > rect.width:
             words = requested_line.split(' ')
             # if any of our words are too long to fit, return.
-            for word in words:
-                if font.size(word)[0] >= rect.width:
-                    raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
+            # for word in words:
+                # if font.size(word)[0] >= rect.width:
+                #     raise TextRectException("The word " + word + " is too long to fit in the rect passed.")
             # Start a new line
             accumulated_line = ""
             for word in words:
@@ -60,14 +60,22 @@ def render_textrect(string, font, rect, text_color, background_color, justificat
             final_lines.append(requested_line)
 
     # Let's try to write the text out on the surface.
-
-    surface = pygame.Surface(rect.size)
+    totalHeight=0
+    for eachLine in final_lines:
+        totalHeight+=font.size(eachLine)[1]
+    if totalHeight == 0:
+        totalHeight = 1
+    #surface = pygame.Surface(rect.size)
+    surface = pygame.Surface((rect.width,totalHeight)) #18 is the height of font 20 Arial
+    
     surface.fill(background_color)
+    surface.set_alpha(100)
 
     accumulated_height = 0
+
     for line in final_lines:
-        if accumulated_height + font.size(line)[1] >= rect.height:
-            raise TextRectException("Once word-wrapped, the text string was too tall to fit in the rect.")
+        # if accumulated_height + font.size(line)[1] >= rect.height:
+        #     raise TextRectException("Once word-wrapped, the text string was too tall to fit in the rect.")
         if line != "":
             tempsurface = font.render(line, 1, text_color)
             if justification == 0:

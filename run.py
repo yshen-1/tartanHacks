@@ -216,15 +216,20 @@ class mainApp(object):
 
         y += departmentText.get_height() + 10
         description = description["desc"]
+        if description == None:
+            description = ""
         description_font = self.font_list[20]
         descriptionText = description_font.render(description,True,(255,255,255))
-        factor = descriptionText.get_width()//(maxWidth-10) * len(description)
 
         description_x,description_y = (x,y)
-        descripRect = rect(maxWidth+20,self.height//2-y,(maxWidth+20,self.height//2-y))
-        newSurface = render_textrect(description, description_font, descripRect, (255,255,255),(0,0,0))
+        maxWidth = self.width//6
+        descripRect = rect(maxWidth+20,self.height//2-y,(maxWidth+20,self.height))
 
-        pygame.draw.rect(self.background,(0,0,0),(x-10,x-10,maxWidth + 20 ,self.height//2),0)
+        if len(description) > 1000:
+            description = description[:1000] + "......"
+        print(len(description))
+        newSurface = render_textrect(description, description_font, descripRect, (255,255,255),(0,0,0))
+        #pygame.draw.rect(self.background,(0,0,0),(x,y,maxWidth + 30 ,self.height//2),0)
         self.background.blit(newSurface,(x,y))
         self.background.blit(titleText, (title_x,title_y))
         self.background.blit(departmentText, (department_x,department_y))
