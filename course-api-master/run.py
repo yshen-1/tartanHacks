@@ -10,8 +10,9 @@ def getDepartmentColor(courseID):
     idPrefix=courseID.split('-')[0]
     idCourseLevel=int(courseID.split('-')[1][0])
 
-    csBaseColor=[204,0,0]
+    csBaseColor=[204,51,1]
     eceBaseColor=[51,204,51]
+    mlBaseColor=[51,51,204]
     divisor=min(max((0.5*idCourseLevel),1),2.5)
     
     if idPrefix=="15":
@@ -22,6 +23,10 @@ def getDepartmentColor(courseID):
         for i in range(len(eceBaseColor)):
             eceBaseColor[i]=eceBaseColor[i]//divisor
         return eceBaseColor
+    elif idPrefix=="10":
+        for i in range(len(mlBaseColor)):
+            mlBaseColor[i]=mlBaseColor[i]//divisor
+        return mlBaseColor
 
 #gets score of one course
 #input : masterdictionary, one course
