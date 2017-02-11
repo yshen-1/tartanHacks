@@ -61,7 +61,7 @@ class mainApp(object):
         self.backgroundImage=pygame.image.load("blurdark.png")
         self.backgroundImage=self.backgroundImage.convert()
         self.backgroundX,self.backgroundY=0,0
-        self.background.blit(self.backgroundImage,(0,0))
+        self.background.blit(self.backgroundImage,(self.backgroundX,self.backgroundY))
         self.isRunning=True
         self.masterDict=dict()
         self.updateMasterDictionary()
@@ -150,7 +150,7 @@ class mainApp(object):
         self.background.blit(text, (newX,newY))
 
     def drawAll(self):
-        self.background.blit(self.backgroundImage,(0,0))
+        self.background.blit(self.backgroundImage,(int(self.backgroundX),int(self.backgroundY)))
         self.drawNodes()
         self.background=self.background.convert()
         self.screen.blit(self.background,(0,0))
@@ -188,6 +188,8 @@ class mainApp(object):
                     self.mousePress=True
             self.cx += self.xSpeed
             self.cy -= self.ySpeed
+            self.backgroundX+=self.xSpeed/20
+            self.backgroundY-=self.ySpeed/20
             if self.mousePress:
                 self.mousePressed(mouseX,mouseY)
             self.timerFired()
