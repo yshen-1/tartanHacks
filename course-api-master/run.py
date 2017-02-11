@@ -113,7 +113,7 @@ class mainApp(object):
             self.drawLine(pos1,pos2)
 
     def drawLine(self,pos1,pos2):
-        pygame.draw.line(self.background,(0,0,0),pos1,pos2)
+        pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
 
     def drawCenterCourse(self):
         font = self.font_list[30]
