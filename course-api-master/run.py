@@ -159,7 +159,6 @@ def largestSuperScore(courseDict):
 
         return currentLarge
 
-
 def getAllNLevelCourse(courseDict,n,hasPrereqs):
     L = []
     for courseId, courseNode in courseDict.items():
