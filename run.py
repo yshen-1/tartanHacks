@@ -213,6 +213,15 @@ class mainApp(object):
         newY=y-text.get_height()//2
         self.background.blit(text, (newX,newY))
 
+    def drawWhiteLineDescrip(self):
+        x, y = self.width//2,self.height-30
+        text = "White lines show the prereqs this course satisfies"
+        font = self.font_list[30]
+        text=font.render(text, True, (255,255,255))
+        newX=x-text.get_width()//2
+        newY=y-text.get_height()//2
+        self.background.blit(text, (newX,newY))
+
     def drawDescription(self):
         
         maxWidth = 0
@@ -244,8 +253,6 @@ class mainApp(object):
         prereqs_x,prereqs_y = (x,y)
         if prereqsText.get_width() > maxWidth:
             maxWidth = prereqsText.get_width()
-
-
 
         y += prereqsText.get_height() + 10
         description = description["desc"]
@@ -281,6 +288,7 @@ class mainApp(object):
             self.drawDescription()
         self.background.blit(self.help1,(self.width-self.help1.get_width(),0))
         self.background.blit(self.help2,(self.width-self.help2.get_width(),self.help1.get_height()))
+        self.drawWhiteLineDescrip()
         self.background=self.background.convert()
         self.screen.blit(self.background,(0,0))
 
