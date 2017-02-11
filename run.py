@@ -109,8 +109,9 @@ class mainApp(object):
         pass
 
     def mousePressed(self,x,y):
-        self.cx=x
-        self.cy=y
+        pass
+        #self.cx=x
+        #self.cy=y
 
     def timerFired(self):
         setNodePositions(self.masterDict,self.cx,self.cy,True)
