@@ -72,6 +72,7 @@ class mainApp(object):
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
         setNodePositions(self.masterDict,self.cx,self.cy) 
+        self.enablePreqsNeededLine = False
         self.font_list = list()
         #creating font library
         for i in range(1,51):
@@ -120,7 +121,9 @@ class mainApp(object):
             self.center_distance[nodeID] = courseDistance
         self.centerCourse = min(self.center_distance, key=self.center_distance.get)
         self.drawCenterCourse()
-        self.drawCenterLines(self.centerCourse,2)
+        self.drawCenterLines(self.centerCourse,1)
+        #if(self.enablePreqsNeededLine):
+         #   self.drawPrereqsNeededLines(self.centerCourse,1)
 
     def drawCenterLines(self, course, depth):
         prereqsFor = self.masterDict[course].getPrereqsFor()
@@ -136,7 +139,21 @@ class mainApp(object):
                 pass
                 #Enable for recursive line drawing
                 #self.drawCenterLines(prereq,depth)
-
+    
+    def drawPrereqsNeededLines(self, course, depth):
+        prereqsNeeded = self.masterDict[course].getPrereqsNeeded()
+        for prereq in prereqsNeeded:
+            pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
+            self.drawLine(pos1,pos2)
+            #enlarge prereqs
+            color=getDepartmentColor(prereq)
+            pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
+            self.addText(prereq, 1)
+            depth -= 1
+            if(depth > 0):
+                pass
+                #Enable for recursive line drawing
+                #self.drawCenterLines(prereq,depth)
     def drawLine(self,pos1,pos2):
         pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
 
@@ -202,6 +219,8 @@ class mainApp(object):
                         self.ySpeed = 18
                     elif event.key == pygame.K_d:
                         self.descriptionMode = True
+                    elif event.key == pygame.K_n:
+                        self.enablePreqsNeededLine = True
                 elif event.type==pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.xSpeed = 0
@@ -213,6 +232,8 @@ class mainApp(object):
                         self.ySpeed = 0
                     elif event.key == pygame.K_d:
                         self.descriptionMode = False
+                    elif event.key == pygame.K_n:
+                        self.enablePreqsNeededLine = False
                 elif event.type==pygame.MOUSEBUTTONUP:
                     self.mousePress=False
                 elif event.type==pygame.MOUSEBUTTONDOWN:
