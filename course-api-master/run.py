@@ -49,9 +49,10 @@ class mainApp(object):
         self.width=(1920)*3//4
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.background=pygame.Surface((self.width,self.height))
-        self.backgroundColor=(255,25,255)
-        self.background.fill(self.backgroundColor)
-        self.background=self.background.convert()
+        self.backgroundImage=pygame.image.load("blurdark.png")
+        self.backgroundImage=self.backgroundImage.convert()
+        self.backgroundX,self.backgroundY=0,0
+        self.background.blit(self.backgroundImage,(0,0))
         self.isRunning=True
         self.masterDict=dict()
         self.updateMasterDictionary()
@@ -134,7 +135,7 @@ class mainApp(object):
         self.background.blit(text, (newX,newY))
 
     def drawAll(self):
-        self.background.fill(self.backgroundColor)
+        self.background.blit(self.backgroundImage,(0,0))
         self.drawNodes()
         self.background=self.background.convert()
         self.screen.blit(self.background,(0,0))
