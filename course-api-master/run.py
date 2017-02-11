@@ -13,7 +13,8 @@ def getDepartmentColor(courseID):
     csBaseColor=[255,51,0]
     eceBaseColor=[51,204,51]
     mlBaseColor=[51,51,204]
-    divisor=min(max((0.5*idCourseLevel),1),2.5)
+    otherBaseColor=[150,30,150]
+    divisor=min(max((0.4*idCourseLevel),1),2.0)
     
     if idPrefix=="15":
         for i in range(len(csBaseColor)):
@@ -27,6 +28,14 @@ def getDepartmentColor(courseID):
         for i in range(len(mlBaseColor)):
             mlBaseColor[i]=mlBaseColor[i]//divisor
         return mlBaseColor
+    else:
+        for i in range(len(mlBaseColor)):
+            otherBaseColor[i]=otherBaseColor[i]//divisor
+        return otherBaseColor
+
+
+
+
 
 #gets score of one course
 #input : masterdictionary, one course
@@ -94,7 +103,7 @@ class mainApp(object):
     def drawNodes(self):
         for nodeID in self.masterDict.keys():
             nodeColor=getDepartmentColor(nodeID)
-            nodeColor=nodeColor if nodeColor!=None else [150,30,150]
+            nodeColor=nodeColor  
             scaling = zoom(self.masterDict[nodeID].x,self.masterDict[nodeID].y,self.width,self.height)
             newRadius = self.masterDict[nodeID].r*scaling
             pygame.draw.circle(self.background,nodeColor,(self.masterDict[nodeID].x,self.masterDict[nodeID].y),int(newRadius))
@@ -111,6 +120,12 @@ class mainApp(object):
         for prereq in prereqsFor:
             pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
             self.drawLine(pos1,pos2)
+            #enlarge prereqs
+            color=getDepartmentColor(prereq)
+            print("prereq: ", prereq)
+            print("color: ", color)
+            pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
+            self.addText(prereq, 1)
 
     def drawLine(self,pos1,pos2):
         pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
@@ -218,11 +233,15 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
         for courseId, courseNode in courseDict.items():
             factor = 0
             breakPoint = 5
+            if courseNode.superScore <= largest - 40:
+                factor += 4*(largest - courseNode.superScore)
+            else:
+                factor += 160 
             if courseNode.superScore < breakPoint:
-                factor = (breakPoint - courseNode.superScore)*100
+                factor += (breakPoint - courseNode.superScore)*100 + 300
             if courseNode.superScore == 0:
                 factor += int(courseId[0:2])*10
-            radius=((largest-courseNode.superScore) + factor)/2#radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=((largest-courseNode.superScore) + factor)/6#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
