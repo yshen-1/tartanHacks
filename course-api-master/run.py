@@ -19,15 +19,15 @@ def getDepartmentColor(courseID):
     
     if idPrefix=="15":
         for i in range(len(csBaseColor)):
-            csBaseColor[i]=max(0,csBaseColor[i]-idCourseLevel*mult)
+            csBaseColor[i]=max(0,csBaseColor[i]-min(100,idCourseLevel*mult))
         return csBaseColor
     elif idPrefix=="18":
         for i in range(len(eceBaseColor)):
-            eceBaseColor[i]=max(0,eceBaseColor[i]-idCourseLevel*mult)
+            eceBaseColor[i]=max(0,eceBaseColor[i]-min(100,idCourseLevel*mult))
         return eceBaseColor
     elif idPrefix=="10":
         for i in range(len(mlBaseColor)):
-            mlBaseColor[i]==max(0,mlBaseColor[i]-idCourseLevel*mult)
+            mlBaseColor[i]==max(0,mlBaseColor[i]-min(100,idCourseLevel*mult))
         return mlBaseColor
     else:
         for i in range(len(mlBaseColor)):
@@ -173,13 +173,13 @@ class mainApp(object):
                     self.isRunning=False
                 elif event.type==pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        self.xSpeed = 8
+                        self.xSpeed = 12
                     elif event.key == pygame.K_RIGHT:
-                        self.xSpeed = -8
+                        self.xSpeed = -12
                     elif event.key == pygame.K_UP:
-                        self.ySpeed = -8
+                        self.ySpeed = -12
                     elif event.key == pygame.K_DOWN:
-                        self.ySpeed = 8
+                        self.ySpeed = 12
                 elif event.type==pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.xSpeed = 0
