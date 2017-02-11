@@ -55,7 +55,11 @@ def lessCourses(courses):
             del answer[key]
     return answer
         
-def zoom(x,y,screenWidth,screenHeight,maxZoom):
+def zoom(x,y,screenWidth,screenHeight):
     scale = max(screenWidth,screenHeight)
-    curve = maxZoom - (x**2+y**2)/(scale**2)
+    x = x - screenWidth/2
+    y = y - screenHeight/2
+    curve = 1 - (x**2+y**2)/(scale**2)
     return curve
+
+

@@ -50,7 +50,8 @@ def getScore(master_dict,courseName):
         answer += getScore(master_dict,prereq)
     return answer
 
-print(getScore(master,'15-122'))
+print(getScore(master,'57-300'))
+
 
 
 class mainApp(object):
