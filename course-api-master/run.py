@@ -40,8 +40,8 @@ class mainApp(object):
     def __init__(self):
         pygame.init()
         self.resolution=2
-        self.height=(1080)//2
-        self.width=(1920)//2
+        self.height=(1080)*3//4
+        self.width=(1920)*3//4
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.background=pygame.Surface((self.width,self.height))
         self.backgroundColor=(255,25,255)
