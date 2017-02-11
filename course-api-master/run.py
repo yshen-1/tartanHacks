@@ -52,6 +52,12 @@ class mainApp(object):
             self.drawAll()
             pygame.display.update()
         pygame.quit()
+
+def setNodePositions(courseDict):
+    #Step 1, get 100-level course with no preqs
+    for courseId, courseNode in courseDict.items():
+        if(courseId[3] == 1 && len(courseNode.prereqsNeeded) == 0):
+            
 if __name__=='__main__':
     testApp=mainApp()
     testApp.run()
