@@ -6,6 +6,7 @@ import math
 import random
 
 def getDepartmentColor(courseID):
+    #courseID is string containing course number
     idPrefix=courseID.split('-')[0]
     idCourseLevel=int(courseID.split('-')[1][0])
 
@@ -22,23 +23,6 @@ def getDepartmentColor(courseID):
             eceBaseColor[i]=eceBaseColor[i]//divisor
         return eceBaseColor
 
-#put in init
-def getMasterDict():
-    result_dict = dict()
-    course_handler = ScottyLabsHandler()
-    course_dict = lessCourses(course_handler.courses)
-    courses = course_dict
-    for course in courses:
-        currentNode = courseNode(courses[course]["name"])
-        currentNode.addPrereqsFor(course_handler.getPreFor(courses,course))
-        currentNode.addPrereqsNeeded(course_handler.getPreNeeded(courses,course))
-        result_dict[course] = currentNode
-    return result_dict
-
-master = getMasterDict()
-print(master['15-112'].getPrereqsNeeded())
-print(master['15-112'].getPrereqsFor())
-
 #gets score of one course
 #input : masterdictionary, one course
 #output: score
@@ -50,28 +34,54 @@ def getScore(master_dict,courseName):
         answer += getScore(master_dict,prereq)
     return answer
 
-print(getScore(master,'57-300'))
-
-
 
 class mainApp(object):
     def __init__(self):
-        pygame.init()
+#        pygame.init()
         self.resolution=2
         self.height=(1080)//2
         self.width=(1920)//2
-        self.screen=pygame.display.set_mode((self.width,self.height))
-        self.background=pygame.Surface((self.width,self.height))
-        self.background.fill((255,25,255))
-        self.background=self.background.convert()
+#        self.screen=pygame.display.set_mode((self.width,self.height))
+#        self.background=pygame.Surface((self.width,self.height))
+        self.backgroundColor=(255,25,255)
+#        self.background.fill(self.backgroundColor)
+#        self.background=self.background.convert()
         self.isRunning=True
+        self.masterDict=dict()
+        self.updateMasterDictionary()
+        print("Dict updated!")
+        self.addSuperScores()
+#        self.mousePressed=False
+        self.cx,self.cy=self.width//2,self.height//2
+
+    def updateMasterDictionary(self):
+        self.courseHandler = ScottyLabsHandler()
+        courses = lessCourses(self.courseHandler.courses)
+        for course in courses:
+            currentNode = courseNode(courses[course]["name"])
+            currentNode.addPrereqsFor(self.courseHandler.getPreFor(courses,course))
+            currentNode.addPrereqsNeeded(self.courseHandler.getPreNeeded(courses,course))
+            self.masterDict[course] = currentNode
+
+    def addSuperScores(self):
+        for nodeIDs in self.masterDict:
+            print(nodeIDs)
+            self.masterDict[nodeIDs].setSuperScore(getScore(self.masterDict,nodeIDs))
     def keyPressed(self):
         pass
-    def mousePressed(self):
-        pass
+    def mousePressed(self,x,y):
+        self.cx=x
+        self.cy=y
     def timerFired(self):
-        pass
+        setNodePositions(self.masterDict,self.cx,self.cy)
+    def drawNodes(self):
+        for nodeID in self.masterDict.keys():
+            nodeColor=getDepartmentColor(nodeID)
+            nodeColor=nodeColor if nodeColor!=None else [150,30,150]
+            pygame.draw.circle(self.background,nodeColor,(self.masterDict[nodeID].x,self.masterDict[nodeID].y),self.masterDict[nodeID].r)
     def drawAll(self):
+        self.background.fill(self.backgroundColor)
+        self.drawNodes()
         self.background=self.background.convert()
         self.screen.blit(self.background,(0,0))
     def run(self):
@@ -85,7 +95,11 @@ class mainApp(object):
                 elif event.type==pygame.KEYDOWN:
                     self.keyPressed()
                 elif event.type==pygame.MOUSEBUTTONUP:
-                    seslf.mousePressed()
+                    self.mousePressed=False
+                elif event.type==pygame.MOUSEBUTTONDOWN:
+                    self.mousePressed=True
+            if self.mousePressed:
+                self.mousePressed(mouseX,mouseY)
             self.timerFired()
             self.drawAll()
             pygame.display.update()
@@ -99,18 +113,16 @@ def getAllNLevelCourse(courseDict,n,hasPrereqs):
             L.extend(courseID)
     return L
 
-def setNodePositions(courseDict, width, height):
-    cx = width//2
-    cy = height//2
+def setNodePositions(courseDict, cx, cy):
     radiusScalingFactor = 1000;
     for courseId, courseNode in courseDict.items():
-        angle = random.uniform(0, 2*pi)
+        angle = random.uniform(0, 2*math.pi)
         radius = radiusScalingFactor/courseNode.superScore
-        posX = radius*cos(angle)
-        posY = radius*sin(angle)
+        posX = radius*cos(angle)+cx
+        posY = cy-radius*sin(angle)
         courseNode.setPosition(posX,posY)
 
-    
 # if __name__=='__main__':
 #      testApp=mainApp()
 #      testApp.run()
+
