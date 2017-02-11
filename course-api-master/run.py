@@ -1,5 +1,7 @@
 #!/usr/bin/env/python3
 import pygame
+import helpers, courseNode
+
 def getDepartmentColor():
     idPrefix=courseID[0:2]
     idCourseLevel=int(course[3])
@@ -16,6 +18,13 @@ def getDepartmentColor():
         for i in eceBaseColor:
             i=i // divisor
             return eceBaseColor
+
+def getMasterDict(courses):
+    result_dict = dict()
+    for course in courses:
+        currentNode = courseNode()
+
+
 class mainApp(object):
     def __init__(self):
         pygame.init()
