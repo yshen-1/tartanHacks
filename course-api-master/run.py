@@ -10,7 +10,7 @@ def getDepartmentColor(courseID):
     idPrefix=courseID.split('-')[0]
     idCourseLevel=int(courseID.split('-')[1][0])
 
-    csBaseColor=[204,51,1]
+    csBaseColor=[255,51,0]
     eceBaseColor=[51,204,51]
     mlBaseColor=[51,51,204]
     divisor=min(max((0.5*idCourseLevel),1),2.5)
