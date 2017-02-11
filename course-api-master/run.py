@@ -153,6 +153,7 @@ class mainApp(object):
 
     def drawAll(self):
         self.background.fill(self.backgroundColor)
+        self.backgroundImage=self.backgroundImage.convert()
         self.background.blit(self.backgroundImage,(int(self.backgroundX),int(self.backgroundY)))
         self.drawNodes()
         self.background=self.background.convert()
