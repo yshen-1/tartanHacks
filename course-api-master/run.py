@@ -12,7 +12,7 @@ def getDepartmentColor(courseID):
 
     csBaseColor=[204,0,0]
     eceBaseColor=[51,204,51]
-    divisor=max((4-idCourseLevel),1)
+    divisor=min(max((0.5*idCourseLevel),1),2.5)
     
     if idPrefix=="15":
         for i in range(len(csBaseColor)):
