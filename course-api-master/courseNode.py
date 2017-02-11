@@ -8,21 +8,22 @@ class courseNode(object):
         self.prereqsNeeded = list()
         self.superScore=0
         self.angle=0
+
     def setSuperScore(self,superScore):
         self.superScore=superScore
+
     def setAngle(self,angle):
         self.angle=angle
+
     def setPosition(self,x,y):
         self.x = x
         self.y = y 
 
     def addPrereqsFor(self,L):
         self.prereqsFor.extend(L)
-        
 
     def addPrereqsNeeded(self,L):
         self.prereqsNeeded.extend(L)
-        
 
     def getPrereqsFor(self):
         return self.prereqsFor
@@ -33,3 +34,5 @@ class courseNode(object):
     def getSuperScore(self):
         return self.superScore
 
+    def getCourseName(self):
+        return self.courseName
