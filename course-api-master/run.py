@@ -103,7 +103,7 @@ class mainApp(object):
             #draw course name
             courseDistance = ((self.width//2-self.masterDict[nodeID].x)**2 + (self.height//2-self.masterDict[nodeID].y)**2)**0.5
             self.center_distance[nodeID] = courseDistance
-            self.drawCenterCourse()
+        self.drawCenterCourse()
 
     def drawCenterCourse(self):
         font = self.font_list[30]
