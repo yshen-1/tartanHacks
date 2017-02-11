@@ -73,6 +73,8 @@ class mainApp(object):
         for nodeIDs in self.masterDict:
             self.masterDict[nodeIDs].setSuperScore(getScore(self.masterDict,nodeIDs))
 
+    
+
     def keyPressed(self):
         pass
 
@@ -147,6 +149,16 @@ class mainApp(object):
             pygame.display.update()
         pygame.quit()
 
+def largestSuperScore(courseDict):
+        currentLarge = -1
+
+        for nodeIDs in courseDict:
+            score = courseDict[nodeIDs].getSuperScore()
+            if score > currentLarge:
+                currentLarge = score
+
+        return currentLarge
+
 
 def getAllNLevelCourse(courseDict,n,hasPrereqs):
     L = []
@@ -156,6 +168,7 @@ def getAllNLevelCourse(courseDict,n,hasPrereqs):
     return L
 
 def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
+    print(largestSuperScore(courseDict))
     if not randomizeAngles:
         radiusScalingFactor = 1000;
         for courseId, courseNode in courseDict.items():

@@ -30,3 +30,6 @@ class courseNode(object):
     def getPrereqsNeeded(self):
         return self.prereqsNeeded
 
+    def getSuperScore(self):
+        return self.superScore
+
