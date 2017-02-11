@@ -142,6 +142,13 @@ class mainApp(object):
         text = font.render(self.masterDict[course].getCourseName(),True,(250,250,250))
         super_text = font.render("Prereq for: " + str(self.masterDict[course].getSuperScore()) + " courses",True,(250,250,250))
         x, y = self.width//2,30
+        #Add Overlayed center node
+        scaling = zoom(self.masterDict[course].x,self.masterDict[course].y,self.width,self.height)
+        newRadius = self.masterDict[course].r*scaling
+        color=getDepartmentColor(course)
+        pygame.draw.circle(self.background,color,(self.masterDict[course].x,self.masterDict[course].y),int(newRadius))
+        self.addText(course, scaling)
+        #Draw course name
         newX=x-text.get_width()//2
         newY=y-text.get_height()//2
         secondLineX = x - super_text.get_width()//2
