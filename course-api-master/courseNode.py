@@ -1,5 +1,6 @@
 class courseNode(object):
-    def __init__(self):
+    def __init__(self,courseName):
+        self.courseName=courseName
 	self.x = 0
 	self.y = 0
 	self.r = 30
