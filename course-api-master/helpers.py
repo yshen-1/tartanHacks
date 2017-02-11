@@ -4,9 +4,9 @@ import json
 json_file = open('out.json')
 json_str = json_file.read()
 json_data = json.loads(json_str)
-print(json_data["courses"]["15-122"].keys())
+
 courses = json_data['courses']
-#print(courses.keys())
+
 
 
 def getPrereqs(courses,courseName):
@@ -52,9 +52,9 @@ def prereqsFuture(courses,courseName):
         
 
 
-print(getPreArray(courses,"15-150"))
-print(getCoArray(courses,"15-122"))
-print(getPreArray(courses,"10-601"))
-print(prereqsFuture(courses,"15-112"))
+# print(getPreArray(courses,"15-150"))
+# print(getCoArray(courses,"15-122"))
+# print(getPreArray(courses,"10-601"))
+# print(prereqsFuture(courses,"15-112"))
 
 
