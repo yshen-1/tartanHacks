@@ -30,11 +30,12 @@ def getMasterDict():
         currentNode = courseNode(course_handler.courses[course]["name"])
         currentNode.addPrereqsFor(course_handler.getPreFor(course_handler.courses,course))
         currentNode.addPrereqsNeeded(course_handler.getPreNeeded(course_handler.courses,course))
-        result_dict[course] = courseNode
+        result_dict[course] = currentNode
     return result_dict
 
 dict_example = getMasterDict()
-print(dict_example['15-112'].prereqsFor)
+print(type(dict_example['15-112']))
+print(dict_example['15-112'].getPrereqsFor())
 
 class mainApp(object):
     def __init__(self):

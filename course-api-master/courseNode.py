@@ -12,14 +12,16 @@ class courseNode(object):
         self.y = y 
 
     def addPrereqsFor(self,L):
-        self.prereqsFor=self.prereqsFor.extend(L)
+        self.prereqsFor.extend(L)
+        
 
     def addPrereqsNeeded(self,L):
-        self.prereqsNeeded=self.prereqsNeeded.extend(L)
+        self.prereqsNeeded.extend(L)
+        
 
     def getPrereqsFor(self):
-    	return self.prereqsFor
+        return self.prereqsFor
 
     def getPrereqsNeeded(self):
-    	return self.prereqsNeeded
+        return self.prereqsNeeded
 
