@@ -10,9 +10,10 @@ def getDepartmentColor(courseID):
     idPrefix=courseID.split('-')[0]
     idCourseLevel=int(courseID.split('-')[1][0])
 
-    csBaseColor=[204,0,0]
+    csBaseColor=[204,51,1]
     eceBaseColor=[51,204,51]
-    divisor=max((4-idCourseLevel),1)
+    mlBaseColor=[51,51,204]
+    divisor=min(max((0.5*idCourseLevel),1),2.5)
     
     if idPrefix=="15":
         for i in range(len(csBaseColor)):
@@ -22,6 +23,10 @@ def getDepartmentColor(courseID):
         for i in range(len(eceBaseColor)):
             eceBaseColor[i]=eceBaseColor[i]//divisor
         return eceBaseColor
+    elif idPrefix=="10":
+        for i in range(len(mlBaseColor)):
+            mlBaseColor[i]=mlBaseColor[i]//divisor
+        return mlBaseColor
 
 #gets score of one course
 #input : masterdictionary, one course
@@ -196,7 +201,13 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
     else:
         radiusScalingFactor=2000
         for courseId, courseNode in courseDict.items():
-            radius=(largest-courseNode.superScore)*1.5#radiusScalingFactor/(courseNode.superScore+1)+50
+            factor = 0
+            breakPoint = 5
+            if courseNode.superScore < breakPoint:
+                factor = (breakPoint - courseNode.superScore)*100
+            if courseNode.superScore == 0:
+                factor += int(courseId[0:2])*10
+            radius=((largest-courseNode.superScore) + factor)/4#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
