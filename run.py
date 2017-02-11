@@ -136,6 +136,13 @@ class mainApp(object):
         prereqsFor = self.masterDict[course].getPrereqsFor()
         for prereq in prereqsFor:
             pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
+            #Handle if the line goes off screen
+
+            (posX, posY) = pos2
+            print(self.cx,",",self.cy)
+            if(posX < self.cx-self.width//2 or posX > self.cx+self.width//2 
+            or posY < self.cy-self.height//2 or posY > self.cy+self.height//2):
+                print("Line off screen")
             self.drawLine(pos1,pos2)
             #enlarge prereqs
             color=getDepartmentColor(prereq)
@@ -161,8 +168,12 @@ class mainApp(object):
             self.drawBlackLine(pos1,pos2)
             #enlarge prereqs
             color=getDepartmentColor(prereq[0])
-            pygame.draw.circle(self.background,color,(self.masterDict[prereq[0]].x,self.masterDict[prereq[0]].y),25)
+            pygame.draw.circle(self.background,color,(self.masterDict[prereq[0]].x,
+                self.masterDict[prereq[0]].y),25)
             self.addText(prereq[0], 1)
+        
+            
+            
             depth -= 1
             if(depth > 0):
                 pass
