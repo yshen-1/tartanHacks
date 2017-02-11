@@ -14,8 +14,8 @@ class ScottyLabsHandler(object):
         return courses[courseName]['coreqs']
 
     #separated by ands/ OR courses are in 2d list
-    def getPreArray(self,courses,courseName):
-        if self.getPrereqs(courses,courseName) == None: return None
+    def getPreNeeded(self,courses,courseName):
+        if self.getPrereqs(courses,courseName) == None: return []
         pre = self.removeParenthesAndWhite(self.getPrereqs(courses,courseName))
         pre = pre.split('and')
         for i in range(len(pre)):
@@ -35,10 +35,10 @@ class ScottyLabsHandler(object):
         s = s.replace(" ", "")
         return s
 
-    def prereqsFuture(self,courses,courseName):
+    def getPreFor(self,courses,courseName):
         result = list()
         for course in courses:
-            reqs = self.getPreArray(courses,course)
+            reqs = self.getPreNeeded(courses,course)
             if reqs == None:
                 continue
             for prereqs in reqs:
@@ -46,8 +46,5 @@ class ScottyLabsHandler(object):
                     result.append(course)
         return result
         
-
-handler = ScottyLabsHandler()
-print(handler.prereqsFuture(handler.courses,"15-112"))
 
 
