@@ -62,20 +62,21 @@ class mainApp(object):
             self.drawAll()
             pygame.display.update()
         pygame.quit()
-
+def getAllNLevelNoPrereqs(courseDict,n):
+    L = []
+    for courseId, courseNode in courseDict.items():
+        if(courseId[3] == 1 && len(courseNode.prereqsNeeded) == 0):
+            L.extend(courseNode)
+    return L
 def setNodePositions(courseDict, width, height):
     cx = width//2
     cy = height//2
     rInterval = 50
     #Step 1, get 100-level course with no preqs
-    L1 = []
-    for courseId, courseNode in courseDict.items():
-        if(courseId[3] == 1 && len(courseNode.prereqsNeeded) == 0):
-            L1.extend(courseNode)
-    angle = 2*math.pi / len(L1)
-
+    L1 = getAllNLevelNoPrereqs(courseDict)
+   
+    angle = 2*math.pi/len(L1)
     for i in range(len(L1)):
-
         xPos = rInterval*math.cos(angle*i)
         yPos = rInterval*math.sin(angle*i)
         L1[i].setPosition(xPos,yPos)
