@@ -1,6 +1,6 @@
 #!/usr/bin/env/python3
 import pygame
-from helpers import ScottyLabsHandler, lessCourses
+from helpers import ScottyLabsHandler, lessCourses, zoom
 from courseNode import courseNode
 import math
 import random
@@ -33,6 +33,7 @@ def getScore(master_dict,courseName):
     for prereq in prereqsFor:
         answer += getScore(master_dict,prereq)
     return answer
+
 
 
 class mainApp(object):
@@ -78,7 +79,9 @@ class mainApp(object):
         for nodeID in self.masterDict.keys():
             nodeColor=getDepartmentColor(nodeID)
             nodeColor=nodeColor if nodeColor!=None else [150,30,150]
-            pygame.draw.circle(self.background,nodeColor,(self.masterDict[nodeID].x,self.masterDict[nodeID].y),self.masterDict[nodeID].r)
+            x,y=self.masterDict[nodeID].x,self.masterDict[nodeID].y
+            scaling=zoom(x,y,self.width,self.height)
+            pygame.draw.circle(self.background,nodeColor,(x,y),int(self.masterDict[nodeID].r*scaling))
     def drawAll(self):
         self.background.fill(self.backgroundColor)
         self.drawNodes()

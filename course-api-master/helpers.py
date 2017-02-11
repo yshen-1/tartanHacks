@@ -1,4 +1,5 @@
 import json
+import math
 import copy
 
 class ScottyLabsHandler(object):
@@ -58,10 +59,10 @@ def lessCourses(courses):
 
 def zoom(x,y,screenWidth,screenHeight):
     scale = max(screenWidth,screenHeight)
-    x = x - screenWidth/2
-    y = y - screenHeight/2
-    curve = 1 - (x**2+y**2)/(scale**2)
-    return curve
+    x = abs(x - screenWidth/2)
+    y = abs(y - screenHeight/2)
+    curve = (0.9)**(0.01*(x+y)) 
+    return abs(curve)
 
 
 
