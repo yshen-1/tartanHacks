@@ -133,14 +133,19 @@ class mainApp(object):
     def drawLine(self,pos1,pos2):
         pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
 
+    #center course name/superscore appears
     def drawCenterCourse(self):
         font = self.font_list[30]
         course = min(self.center_distance, key=self.center_distance.get)
         text = font.render(self.masterDict[course].getCourseName(),True,(250,250,250))
+        super_text = font.render("Prereq for: " + str(self.masterDict[course].getSuperScore()) + " courses",True,(250,250,250))
         x, y = self.width//2,30
         newX=x-text.get_width()//2
         newY=y-text.get_height()//2
+        secondLineX = x - super_text.get_width()//2
+        secondLineY = y - super_text.get_height()//2 + 30
         self.background.blit(text,(newX,newY))
+        self.background.blit(super_text,(secondLineX,secondLineY))
             
     def addText(self,nodeID, scaling):
         x, y = self.masterDict[nodeID].x,self.masterDict[nodeID].y
