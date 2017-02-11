@@ -2,6 +2,7 @@
 import pygame
 import helpers, courseNode
 import math
+import random
 
 def getDepartmentColor():
     idPrefix=courseID[0:2]
@@ -62,24 +63,26 @@ class mainApp(object):
             self.drawAll()
             pygame.display.update()
         pygame.quit()
-def getAllNLevelNoPrereqs(courseDict,n):
-    L = []
+
+
+def getAllNLevelCourse(courseDict,n,hasPrereqs):
+    L= []
     for courseId, courseNode in courseDict.items():
-        if(courseId[3] == 1 && len(courseNode.prereqsNeeded) == 0):
-            L.extend(courseNode)
+        if(courseId[3] == 1 and (hasPrereqs == True or len(courseNode.prereqsNeeded) == 0)):
+            L.extend(courseID)
     return L
+
 def setNodePositions(courseDict, width, height):
     cx = width//2
     cy = height//2
-    rInterval = 50
-    #Step 1, get 100-level course with no preqs
-    L1 = getAllNLevelNoPrereqs(courseDict)
-   
-    angle = 2*math.pi/len(L1)
-    for i in range(len(L1)):
-        xPos = rInterval*math.cos(angle*i)
-        yPos = rInterval*math.sin(angle*i)
-        L1[i].setPosition(xPos,yPos)
+    radiusScalingFactor = 20;
+    for courseId, courseNode in courseDict.items():
+        angle = random.uniform(0, 2*pi)
+        radius = courseNode.superScore*radiusScalingFactor
+        posX = radius*cos(angle)
+        posY = radius*sin(angle)
+        courseNode.setPosition(posX,posY)
+    
 
 if __name__=='__main__':
     testApp=mainApp()
