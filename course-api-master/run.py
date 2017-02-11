@@ -1,6 +1,6 @@
 #!/usr/bin/env/python3
 import pygame
-from helpers import ScottyLabsHandler
+from helpers import ScottyLabsHandler, lessCourses
 from courseNode import courseNode
 import math
 import random
@@ -26,16 +26,32 @@ def getDepartmentColor(courseID):
 def getMasterDict():
     result_dict = dict()
     course_handler = ScottyLabsHandler()
-    for course in course_handler.courses:
-        currentNode = courseNode(course_handler.courses[course]["name"])
-        currentNode.addPrereqsFor(course_handler.getPreFor(course_handler.courses,course))
-        currentNode.addPrereqsNeeded(course_handler.getPreNeeded(course_handler.courses,course))
+    course_dict = lessCourses(course_handler.courses)
+    courses = course_dict
+    for course in courses:
+        currentNode = courseNode(courses[course]["name"])
+        currentNode.addPrereqsFor(course_handler.getPreFor(courses,course))
+        currentNode.addPrereqsNeeded(course_handler.getPreNeeded(courses,course))
         result_dict[course] = currentNode
     return result_dict
 
-dict_example = getMasterDict()
-print(type(dict_example['15-112']))
-print(dict_example['15-112'].getPrereqsFor())
+master = getMasterDict()
+print(master['15-112'].getPrereqsNeeded())
+print(master['15-112'].getPrereqsFor())
+
+#gets score of one course
+#input : masterdictionary, one course
+#output: score
+def getScore(master_dict,courseName):
+    currentNode = master_dict[courseName]
+    prereqsFor = currentNode.getPrereqsFor()
+    answer = len(prereqsFor)
+    for prereq in prereqsFor:
+        answer += getScore(master_dict,prereq)
+    return answer
+
+print(getScore(master,'15-122'))
+
 
 class mainApp(object):
     def __init__(self):
@@ -94,6 +110,6 @@ def setNodePositions(courseDict, width, height):
         courseNode.setPosition(posX,posY)
 
     
-if __name__=='__main__':
-     testApp=mainApp()
-     testApp.run()
+# if __name__=='__main__':
+#      testApp=mainApp()
+#      testApp.run()
