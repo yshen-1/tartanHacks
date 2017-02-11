@@ -45,6 +45,16 @@ class ScottyLabsHandler(object):
                 if courseName in prereqs:
                     result.append(course)
         return result
-        
 
+    def lessCourses(courses):
+        for key in courses:
+            subject = int(key.split("-")[0])
+            if subject != 15 and subject != 18 and subject != 21 and subject != 36 and subject != 10:
+                del courses[key]
+            
+                
+                  
+      
+#handler = ScottyLabsHandler()
+#print(handler.courses)
 
