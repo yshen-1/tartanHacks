@@ -34,7 +34,7 @@ def getMasterDict():
     return result_dict
 
 dict_example = getMasterDict()
-#print(dict_example['15-112'].prereqsFor)
+print(dict_example['15-112'].prereqsFor)
 
 class mainApp(object):
     def __init__(self):
@@ -84,16 +84,16 @@ def getAllNLevelCourse(courseDict,n,hasPrereqs):
 def setNodePositions(courseDict, width, height):
     cx = width//2
     cy = height//2
-    radiusScalingFactor = 20;
+    radiusScalingFactor = 1000;
     for courseId, courseNode in courseDict.items():
         angle = random.uniform(0, 2*pi)
-        radius = courseNode.superScore*radiusScalingFactor
+        radius = radiusScalingFactor/courseNode.superScore
         posX = radius*cos(angle)
         posY = radius*sin(angle)
         courseNode.setPosition(posX,posY)
 
 
     
-#if __name__=='__main__':
-#     testApp=mainApp()
-#     testApp.run()
+if __name__=='__main__':
+     testApp=mainApp()
+     testApp.run()
