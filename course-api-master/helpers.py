@@ -59,10 +59,3 @@ def zoom(x,y,screenWidth,screenHeight,maxZoom):
     scale = max(screenWidth,screenHeight)
     curve = maxZoom - (x**2+y**2)/(scale**2)
     return curve
-                    
-                  
-      
-handler = ScottyLabsHandler()
-cses = handler.courses
-print(lessCourses(cses))
-
