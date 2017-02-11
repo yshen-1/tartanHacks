@@ -120,10 +120,9 @@ class mainApp(object):
             self.center_distance[nodeID] = courseDistance
         self.centerCourse = min(self.center_distance, key=self.center_distance.get)
         self.drawCenterCourse()
-        self.drawCenterLines()
+        self.drawCenterLines(self.centerCourse,2)
 
-    def drawCenterLines(self):
-        course = self.centerCourse
+    def drawCenterLines(self, course, depth):
         prereqsFor = self.masterDict[course].getPrereqsFor()
         for prereq in prereqsFor:
             pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
@@ -132,6 +131,10 @@ class mainApp(object):
             color=getDepartmentColor(prereq)
             pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
             self.addText(prereq, 1)
+            depth -= 1
+            if(depth > 0):
+                #Enable for recursive line drawing
+                #self.drawCenterLines(prereq,depth)
 
     def drawLine(self,pos1,pos2):
         pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
