@@ -24,10 +24,10 @@ def getDepartmentColor():
 def getMasterDict(courses):
     result_dict = dict()
     course_handler = ScottyLabsHandler()
-    for course in courses:
+    for course in course_handler.courses:
         currentNode = courseNode(course["name"])
-        currentNode.addPrereqsFor(course_handler.getPreFor(courses,course))
-        currentNode.addPrereqsNeeded(course_handler.getPreNeeded(courses,course))
+        currentNode.addPrereqsFor(course_handler.getPreFor(course_handler.courses,course))
+        currentNode.addPrereqsNeeded(course_handler.getPreNeeded(course_handler.courses,course))
         result_dict[course] = courseNode
     return result_dict
 
