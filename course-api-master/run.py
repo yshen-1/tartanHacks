@@ -50,7 +50,6 @@ class mainApp(object):
         self.isRunning=True
         self.masterDict=dict()
         self.updateMasterDictionary()
-        print("Dict updated!")
         self.addSuperScores()
         self.mousePress=False
         self.cx,self.cy=self.width//2,self.height//2
@@ -69,7 +68,6 @@ class mainApp(object):
 
     def addSuperScores(self):
         for nodeIDs in self.masterDict:
-            print(nodeIDs)
             self.masterDict[nodeIDs].setSuperScore(getScore(self.masterDict,nodeIDs))
     def keyPressed(self):
         pass
