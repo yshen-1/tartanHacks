@@ -68,7 +68,7 @@ class mainApp(object):
                 elif event.type==pygame.KEYDOWN:
                     self.keyPressed()
                 elif event.type==pygame.MOUSEBUTTONUP:
-                    seslf.mousePressed()
+                    self.mousePressed()
             self.timerFired()
             self.drawAll()
             pygame.display.update()
