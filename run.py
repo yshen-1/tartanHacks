@@ -223,7 +223,20 @@ class mainApp(object):
         if departmentText.get_width() > maxWidth:
             maxWidth = departmentText.get_width()
 
-        y += departmentText.get_height() + 10
+        y += departmentText.get_height()
+        prereqsStr = description["prereqs"]
+        if prereqsStr == None:
+            prereqsStr = "None"
+        prereqs = "Pre-reqs: " + prereqsStr
+        prereqs_font = self.font_list[20]
+        prereqsText = prereqs_font.render(prereqs,True,(255,255,255))
+        prereqs_x,prereqs_y = (x,y)
+        if prereqsText.get_width() > maxWidth:
+            maxWidth = prereqsText.get_width()
+
+
+
+        y += prereqsText.get_height() + 10
         description = description["desc"]
         if description == None:
             description = ""
@@ -241,6 +254,7 @@ class mainApp(object):
         #pygame.draw.rect(self.background,(0,0,0),(x,y,maxWidth + 30 ,self.height//2),0)
         self.background.blit(newSurface,(x,y))
         self.background.blit(titleText, (title_x,title_y))
+        self.background.blit(prereqsText, (prereqs_x,prereqs_y))
         self.background.blit(departmentText, (department_x,department_y))
         #self.background.blit(descriptionText, (description_x,description_y))
 
