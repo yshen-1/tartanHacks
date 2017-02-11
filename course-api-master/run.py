@@ -10,27 +10,28 @@ def getDepartmentColor(courseID):
     idPrefix=courseID.split('-')[0]
     idCourseLevel=int(courseID.split('-')[1][0])
 
-    csBaseColor=[255,51,0]
-    eceBaseColor=[51,204,51]
-    mlBaseColor=[51,51,204]
-    otherBaseColor=[150,30,150]
-    divisor=min(max((0.4*idCourseLevel),1),2.0)
+    csBaseColor=[255,65,54]
+    eceBaseColor=[1,244,112]
+    mlBaseColor=[0,116,217]
+    otherBaseColor=[176,196,222]
+    
+    mult = 20
     
     if idPrefix=="15":
         for i in range(len(csBaseColor)):
-            csBaseColor[i]=csBaseColor[i]//divisor
+            csBaseColor[i]=max(0,csBaseColor[i]-idCourseLevel*mult)
         return csBaseColor
     elif idPrefix=="18":
         for i in range(len(eceBaseColor)):
-            eceBaseColor[i]=eceBaseColor[i]//divisor
+            eceBaseColor[i]=max(0,eceBaseColor[i]-idCourseLevel*mult)
         return eceBaseColor
     elif idPrefix=="10":
         for i in range(len(mlBaseColor)):
-            mlBaseColor[i]=mlBaseColor[i]//divisor
+            mlBaseColor[i]==max(0,mlBaseColor[i]-idCourseLevel*mult)
         return mlBaseColor
     else:
         for i in range(len(mlBaseColor)):
-            otherBaseColor[i]=otherBaseColor[i]//divisor
+            otherBaseColor[i]==max(0,otherBaseColor[i])
         return otherBaseColor
 
 
@@ -135,10 +136,14 @@ class mainApp(object):
         font = self.font_list[30]
         course = min(self.center_distance, key=self.center_distance.get)
         text = font.render(self.masterDict[course].getCourseName(),True,(250,250,250))
+        super_text = font.render("Prereq for: " + str(self.masterDict[course].getSuperScore()) + " courses",True,(250,250,250))
         x, y = self.width//2,30
         newX=x-text.get_width()//2
         newY=y-text.get_height()//2
+        secondLineX = x - super_text.get_width()//2
+        secondLineY = y - super_text.get_height()//2 + 30
         self.background.blit(text,(newX,newY))
+        self.background.blit(super_text,(secondLineX,secondLineY))
             
     def addText(self,nodeID, scaling):
         x, y = self.masterDict[nodeID].x,self.masterDict[nodeID].y
@@ -151,6 +156,7 @@ class mainApp(object):
 
     def drawAll(self):
         self.background.fill(self.backgroundColor)
+        self.backgroundImage=self.backgroundImage.convert()
         self.background.blit(self.backgroundImage,(int(self.backgroundX),int(self.backgroundY)))
         self.drawNodes()
         self.background=self.background.convert()
