@@ -90,6 +90,11 @@ class mainApp(object):
         self.center_distance = dict()
         self.descriptionMode = False
         self.centerCourse = None
+        self.helpText="Press d for descriptions."
+        self.helpText2="Press n for prereqs."
+        self.helpFont=self.font_list[20]
+        self.help1=self.helpFont.render(self.helpText,True,(255,255,255))
+        self.help2=self.helpFont.render(self.helpText2,True,(255,255,255))
 
     def updateMasterDictionary(self):
         self.courseHandler = ScottyLabsHandler()
@@ -275,6 +280,8 @@ class mainApp(object):
         self.drawNodes()
         if self.descriptionMode:
             self.drawDescription()
+        self.background.blit(self.help1,(self.width-self.help1.get_width(),0))
+        self.background.blit(self.help2,(self.width-self.help2.get_width(),self.help1.get_height()))
         self.background=self.background.convert()
         self.screen.blit(self.background,(0,0))
 
