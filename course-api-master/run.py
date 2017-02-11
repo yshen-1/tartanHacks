@@ -159,7 +159,7 @@ class mainApp(object):
         self.background.blit(text, (newX,newY))
 
     def drawDescription(self):
-        return
+        pygame.draw.rect(self.background,(0,0,0),(50,50,self.width//5,self.height//2),0)
 
     def drawAll(self):
         self.background.fill(self.backgroundColor)
