@@ -56,7 +56,7 @@ def lessCourses(courses):
     answer = copy.copy(courses)    
     for key in courses:
         subject = int(key.split("-")[0])
-        if subject not in [15, 18, 21, 36, 10, 33]:
+        if subject not in [15]:
             del answer[key]
     return answer
         
