@@ -77,6 +77,7 @@ class mainApp(object):
         self.updateMasterDictionary()
         self.addSuperScores()
         self.mousePress=False
+        self.zoomSpeed = 0
         self.cx,self.cy=self.width//2,self.height//2
         self.cursorZoom = 1
         setNodePositions(self.masterDict,self.cx,self.cy,self.cursorZoom) 
@@ -307,6 +308,10 @@ class mainApp(object):
                         self.descriptionMode = True
                     elif event.key == pygame.K_n:
                         self.enablePreqsNeededLine = True
+                    elif event.key == pygame.K_z:
+                        self.zoomSpeed = 0.015
+                    elif event.key == pygame.K_x:
+                        self.zoomSpeed = -0.015
                 elif event.type==pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.xSpeed = 0
@@ -321,15 +326,17 @@ class mainApp(object):
                     elif event.key == pygame.K_n:
                         self.enablePreqsNeededLine = False
                     elif event.key == pygame.K_z:
-                        self.cursorZoom +=.01
+                        self.zoomSpeed = 0
                     elif event.key == pygame.K_x:
-                        self.cursorZoom -= .01
+                        self.zoomSpeed = 0
                 elif event.type==pygame.MOUSEBUTTONUP:
                     self.mousePress=False
                 elif event.type==pygame.MOUSEBUTTONDOWN:
                     self.mousePress=True
             self.cx += self.xSpeed
             self.cy -= self.ySpeed
+
+            self.cursorZoom += self.zoomSpeed
             self.backgroundX+=self.xSpeed/20
             self.backgroundY-=self.ySpeed/20
             if self.mousePress:
