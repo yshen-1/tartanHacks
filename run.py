@@ -129,8 +129,8 @@ class mainApp(object):
         self.centerCourse = min(self.center_distance, key=self.center_distance.get)
         self.drawCenterCourse()
         self.drawCenterLines(self.centerCourse,1)
-        #if(self.enablePreqsNeededLine):
-         #   self.drawPrereqsNeededLines(self.centerCourse,1)
+        if(self.enablePreqsNeededLine):
+            self.drawPrereqsNeededLines(self.centerCourse,1)
 
     def drawCenterLines(self, course, depth):
         prereqsFor = self.masterDict[course].getPrereqsFor()
@@ -149,20 +149,29 @@ class mainApp(object):
     
     def drawPrereqsNeededLines(self, course, depth):
         prereqsNeeded = self.masterDict[course].getPrereqsNeeded()
+        print(type(prereqsNeeded))
+        print(prereqsNeeded)
+
         for prereq in prereqsNeeded:
-            pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq].getPosition()
-            self.drawLine(pos1,pos2)
+            if(prereq[0] not in self.masterDict.keys()):
+                return
+            print(self.masterDict[course].getPosition())
+            print(self.masterDict[prereq[0]].getPosition())
+            pos1,pos2 = self.masterDict[course].getPosition(),self.masterDict[prereq[0]].getPosition()
+            self.drawBlackLine(pos1,pos2)
             #enlarge prereqs
-            color=getDepartmentColor(prereq)
-            pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
-            self.addText(prereq, 1)
+            color=getDepartmentColor(prereq[0])
+            pygame.draw.circle(self.background,color,(self.masterDict[prereq[0]].x,self.masterDict[prereq[0]].y),25)
+            self.addText(prereq[0], 1)
             depth -= 1
             if(depth > 0):
                 pass
                 #Enable for recursive line drawing
-                #self.drawCenterLines(prereq,depth)
+                self.drawCenterLines(prereq[0],depth)
     def drawLine(self,pos1,pos2):
         pygame.draw.aaline(self.background,(255,255,255),pos1,pos2,1)
+    def drawBlackLine(self,pos1,pos2):
+        pygame.draw.aaline(self.background,(0,0,0),pos1,pos2,1)
 
     def drawCenterCourse(self):
         font = self.font_list[30]
