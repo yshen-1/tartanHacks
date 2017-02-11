@@ -58,7 +58,4 @@ def lessCourses(courses):
                 
                   
       
-handler = ScottyLabsHandler()
-cses = handler.courses
-print(lessCourses(cses))
 

@@ -6,6 +6,9 @@ class courseNode(object):
         self.r = 30
         self.prereqsFor = list()
         self.prereqsNeeded = list()
+        self.superScore=0
+    def setSuperScore(self,superScore):
+        self.superScore=superScore
 
     def setPosition(self,x,y):
         self.x = x

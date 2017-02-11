@@ -34,26 +34,33 @@ def getMasterDict():
         result_dict[course] = currentNode
     return result_dict
 '''
-'''
-dict_example = getMasterDict()
-print(type(dict_example['15-112']))
-print(dict_example['15-112'].getPrereqsFor())
-'''
+#gets score of one course
+#input : masterdictionary, one course
+#output: score
+def getScore(master_dict,courseName):
+    currentNode = master_dict[courseName]
+    prereqsFor = currentNode.getPrereqsFor()
+    answer = len(prereqsFor)
+    for prereq in prereqsFor:
+        answer += getScore(master_dict,prereq)
+    return answer
 class mainApp(object):
     def __init__(self):
-        pygame.init()
+#        pygame.init()
         self.resolution=2
         self.height=(1080)//2
         self.width=(1920)//2
-        self.screen=pygame.display.set_mode((self.width,self.height))
-        self.background=pygame.Surface((self.width,self.height))
+#        self.screen=pygame.display.set_mode((self.width,self.height))
+#        self.background=pygame.Surface((self.width,self.height))
         self.backgroundColor=(255,25,255)
-        self.background.fill(self.backgroundColor)
-        self.background=self.background.convert()
+#        self.background.fill(self.backgroundColor)
+#        self.background=self.background.convert()
         self.isRunning=True
         self.masterDict=dict()
         self.updateMasterDictionary()
-        self.mousePressed=False
+        print("Dict updated!")
+        self.addSuperScores()
+#        self.mousePressed=False
         self.cx,self.cy=self.width//2,self.height//2
     def updateMasterDictionary(self):
         self.courseHandler=ScottyLabsHandler()
@@ -62,6 +69,10 @@ class mainApp(object):
             currentNode.addPrereqsFor(self.courseHandler.getPreFor(self.courseHandler.courses,course))
             currentNode.addPrereqsNeeded(self.courseHandler.getPreNeeded(self.courseHandler.courses,course))
             self.masterDict[course]=currentNode
+    def addSuperScores(self):
+        for nodeIDs in self.masterDict:
+            print(nodeIDs)
+            self.masterDict[nodeIDs].setSuperScore(getScore(self.masterDict,nodeIDs))
     def keyPressed(self):
         pass
     def mousePressed(self,x,y):
@@ -120,4 +131,4 @@ def setNodePositions(courseDict, cx, cy):
     
 if __name__=='__main__':
      testApp=mainApp()
-     testApp.run()
+#     testApp.run()
