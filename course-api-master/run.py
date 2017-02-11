@@ -168,7 +168,7 @@ def getAllNLevelCourse(courseDict,n,hasPrereqs):
     return L
 
 def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
-    print(largestSuperScore(courseDict))
+    largest = largestSuperScore(courseDict)
     if not randomizeAngles:
         radiusScalingFactor = 1000;
         for courseId, courseNode in courseDict.items():
@@ -182,7 +182,7 @@ def setNodePositions(courseDict, cx, cy,randomizeAngles=False):
     else:
         radiusScalingFactor=2000
         for courseId, courseNode in courseDict.items():
-            radius=radiusScalingFactor/(courseNode.superScore+1)+50
+            radius=(largest-courseNode.superScore)*1#radiusScalingFactor/(courseNode.superScore+1)+50
             posX=radius*math.cos(courseNode.angle)+cx
             posY=cy-radius*math.sin(courseNode.angle)
             posX,posY=int(posX),int(posY)
