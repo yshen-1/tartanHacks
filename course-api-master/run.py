@@ -1,6 +1,21 @@
 #!/usr/bin/env/python3
 import pygame
+def getDepartmentColor():
+    idPrefix=courseID[0:2]
+    idCourseLevel=int(course[3])
 
+    csBaseColor=(204,0,0)
+    eceBaseColor=(51,204,51)
+    divisor=max((4-idCourseLevel),1)
+    
+    if idPrefix=="15":
+        for i in csBaseColor:
+            i=i//divisor
+            return csBaseColor
+    elif idPrefix=="18":
+        for i in eceBaseColor:
+            i=i // divisor
+            return eceBaseColor
 class mainApp(object):
     def __init__(self):
         pygame.init()
