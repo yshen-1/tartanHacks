@@ -147,9 +147,7 @@ class mainApp(object):
             #Handle if the line goes off screen
 
             (posX, posY) = pos2
-            if(posX < self.cx-self.width//2 or posX > self.cx+self.width//2 
-            or posY < self.cy-self.height//2 or posY > self.cy+self.height//2):
-                self.drawLine(pos1,pos2)
+            self.drawLine(pos1,pos2)
             #enlarge prereqs
             color=getDepartmentColor(prereq)
             pygame.draw.circle(self.background,color,(self.masterDict[prereq].x,self.masterDict[prereq].y),25)
