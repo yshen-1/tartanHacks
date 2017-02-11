@@ -17,3 +17,4 @@ class courseNode(object):
     def addPrereqsNeeded(self,L):
         self.prereqsNeeded=self.prereqsNeeded.extend(L)
 
+
