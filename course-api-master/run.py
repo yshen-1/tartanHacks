@@ -133,6 +133,7 @@ class mainApp(object):
             self.addText(prereq, 1)
             depth -= 1
             if(depth > 0):
+                pass
                 #Enable for recursive line drawing
                 #self.drawCenterLines(prereq,depth)
 
