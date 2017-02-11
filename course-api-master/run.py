@@ -76,7 +76,7 @@ class mainApp(object):
 
 
 def getAllNLevelCourse(courseDict,n,hasPrereqs):
-    L= []
+    L = []
     for courseId, courseNode in courseDict.items():
         if(courseId[3] == 1 and (hasPrereqs == True or len(courseNode.prereqsNeeded) == 0)):
             L.extend(courseID)
@@ -92,7 +92,6 @@ def setNodePositions(courseDict, width, height):
         posX = radius*cos(angle)
         posY = radius*sin(angle)
         courseNode.setPosition(posX,posY)
-
 
     
 if __name__=='__main__':
