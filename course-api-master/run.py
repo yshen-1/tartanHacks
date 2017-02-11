@@ -16,11 +16,11 @@ def getDepartmentColor():
     if idPrefix=="15":
         for i in csBaseColor:
             i=i//divisor
-            return csBaseColor
+        return csBaseColor
     elif idPrefix=="18":
         for i in eceBaseColor:
             i=i // divisor
-            return eceBaseColor
+        return eceBaseColor
 
 #put in init
 def getMasterDict():
@@ -34,7 +34,7 @@ def getMasterDict():
     return result_dict
 
 dict_example = getMasterDict()
-print(dict_example['15-112'].prereqsFor)
+#print(dict_example['15-112'].prereqsFor)
 
 class mainApp(object):
     def __init__(self):
@@ -91,7 +91,9 @@ def setNodePositions(courseDict, width, height):
         posX = radius*cos(angle)
         posY = radius*sin(angle)
         courseNode.setPosition(posX,posY)
+
+
     
-# if __name__=='__main__':
+#if __name__=='__main__':
 #     testApp=mainApp()
 #     testApp.run()
