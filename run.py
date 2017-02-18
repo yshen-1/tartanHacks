@@ -62,8 +62,8 @@ class mainApp(object):
     def __init__(self):
         pygame.init()
         self.resolution=2
-        self.height=(1080)*3//4
-        self.width=(1920)*3//4
+        self.height=(1080)*7//8
+        self.width=(1920)*7//8
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.background=pygame.Surface((self.width,self.height))
         self.backgroundImage=pygame.image.load("blurdark.png")
