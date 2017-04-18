@@ -1,4 +1,4 @@
-#CMU Course Galaxy
+# CMU Course Galaxy
 
 CMU Tartan Hacks 2017 project by Kevin Wang, Ben Soudry, Yuyi Shen and Jacob
 Hoffman. This program visualizes STEM courses at CMU as an immense web, with
@@ -8,19 +8,19 @@ to the upper level courses it serves as a prereq for. Pressing the 'n' key
 displays black lines connecting the selected course to its prereqs. Pressing the
 'd' key brings up a description of the selected course.
 
-#Installation
+# Installation
 
-##Dependencies
+## Dependencies
 
-###Python 3
+### Python 3
 To install Python 3, visit https://www.python.org/downloads/ and download the appropriate installer for your system.
 
-###Pygame
+### Pygame
 To install pygame, use the terminal command 'pip3 install pygame'. If this
 fails, you may wish to download and install the appropriate .whl file from
 https://www.lfd.uci.edu/~gohlke/pythonlibs/#pygame.
 
-##Instructions
+## Instructions
 1. Install listed dependencies.
 
 2. Clone the tartanHacks repo into the directory of your choice.
